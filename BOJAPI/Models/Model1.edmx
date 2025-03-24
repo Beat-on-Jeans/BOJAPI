@@ -1,0 +1,1321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dam05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Actuacion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="date" Nullable="false" />
+          <Property Name="Local_ID" Type="int" />
+          <Property Name="Musico_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="Chats">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Musico_ID" Type="int" />
+          <Property Name="Local_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="Generos_Musicales">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre_Genero" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Generos_Usuarios">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Genero_Id" Type="int" />
+          <Property Name="Usuario_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Locales">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Valoracion_Media" Type="float" />
+          <Property Name="Usuario_ID" Type="int" />
+          <Property Name="Ubicacion" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Matches">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Like_Local_ID" Type="int" />
+          <Property Name="Like_Musico_ID" Type="int" />
+          <Property Name="Estado" Type="bit" />
+        </EntityType>
+        <EntityType Name="Mensajes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Chat_ID" Type="int" />
+          <Property Name="Emisor_ID" Type="int" />
+          <Property Name="Hora" Type="datetime" />
+          <Property Name="Mensaje" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Musicos">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Usuario_ID" Type="int" />
+          <Property Name="Codigo_Postal" Type="varchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="Notificaciones">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre_Rol" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Soporte">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Usuario_ID" Type="int" />
+          <Property Name="Tecnico_ID" Type="int" />
+          <Property Name="Tipo_Incidencia_ID" Type="int" />
+          <Property Name="Fecha_Creacion" Type="date" Nullable="false" />
+          <Property Name="Fecha_Cierre" Type="date" />
+        </EntityType>
+        <EntityType Name="TipoIncidencia">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre_Incidencia" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="UsuarioMobil">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Notificacion_ID" Type="int" />
+          <Property Name="ROL_ID" Type="int" />
+          <Property Name="Url_Imagen" Type="varchar" MaxLength="250" />
+          <Property Name="Usuario_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROL_ID" Type="int" />
+          <Property Name="Nombre" Type="varchar" MaxLength="250" />
+          <Property Name="Correo" Type="varchar" MaxLength="250" />
+          <Property Name="Contrasena" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="UsuariosCSharp">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="Usuario_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Valoracion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Valor" Type="int" />
+          <Property Name="Valorado_ID" Type="int" />
+          <Property Name="Valorador_ID" Type="int" />
+        </EntityType>
+        <Association Name="FK_Actuacion_Local">
+          <End Role="Locales" Type="Self.Locales" Multiplicity="0..1" />
+          <End Role="Actuacion" Type="Self.Actuacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Actuacion">
+              <PropertyRef Name="Local_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Actuacion_Musico">
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="0..1" />
+          <End Role="Actuacion" Type="Self.Actuacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musicos">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Actuacion">
+              <PropertyRef Name="Musico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chats_Local">
+          <End Role="Locales" Type="Self.Locales" Multiplicity="0..1" />
+          <End Role="Chats" Type="Self.Chats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Chats">
+              <PropertyRef Name="Local_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chats_Musico">
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="0..1" />
+          <End Role="Chats" Type="Self.Chats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musicos">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Chats">
+              <PropertyRef Name="Musico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Genero">
+          <End Role="Generos_Musicales" Type="Self.Generos_Musicales" Multiplicity="0..1" />
+          <End Role="Generos_Usuarios" Type="Self.Generos_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Generos_Musicales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Generos_Usuarios">
+              <PropertyRef Name="Genero_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Locales_UsuarioMobil">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Locales" Type="Self.Locales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Locales">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_Local">
+          <End Role="Locales" Type="Self.Locales" Multiplicity="0..1" />
+          <End Role="Matches" Type="Self.Matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="Like_Local_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_Musico">
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="0..1" />
+          <End Role="Matches" Type="Self.Matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musicos">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="Like_Musico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mensajes_Chat">
+          <End Role="Chats" Type="Self.Chats" Multiplicity="0..1" />
+          <End Role="Mensajes" Type="Self.Mensajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chats">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Mensajes">
+              <PropertyRef Name="Chat_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Musicos_UsuarioMobil">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Musicos">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_Incidencia">
+          <End Role="TipoIncidencia" Type="Self.TipoIncidencia" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoIncidencia">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Tipo_Incidencia_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_Tecnico">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Tecnico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_TecnicoCSharp">
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuariosCSharp">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Tecnico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_Usuario">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_UsuarioCSharp">
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuariosCSharp">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Generos_Usuarios" Type="Self.Generos_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Generos_Usuarios">
+              <PropertyRef Name="Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_CSharp">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuariosCSharp">
+              <PropertyRef Name="Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioMobil_Notificacion">
+          <End Role="Notificaciones" Type="Self.Notificaciones" Multiplicity="0..1" />
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Notificaciones">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuarioMobil">
+              <PropertyRef Name="Notificacion_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioMobil_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuarioMobil">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioMobil_UsuarioID">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuarioMobil">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuariosCSharp_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuariosCSharp">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Valoracion_Valorado">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Valoracion" Type="Self.Valoracion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Valoracion">
+              <PropertyRef Name="Valorado_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Valoracion_Valorador">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Valoracion" Type="Self.Valoracion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Valoracion">
+              <PropertyRef Name="Valorador_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dam05ModelStoreContainer">
+          <EntitySet Name="Actuacion" EntityType="Self.Actuacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chats" EntityType="Self.Chats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Generos_Musicales" EntityType="Self.Generos_Musicales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Generos_Usuarios" EntityType="Self.Generos_Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locales" EntityType="Self.Locales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Matches" EntityType="Self.Matches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mensajes" EntityType="Self.Mensajes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Musicos" EntityType="Self.Musicos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notificaciones" EntityType="Self.Notificaciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Soporte" EntityType="Self.Soporte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoIncidencia" EntityType="Self.TipoIncidencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuarioMobil" EntityType="Self.UsuarioMobil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuariosCSharp" EntityType="Self.UsuariosCSharp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Valoracion" EntityType="Self.Valoracion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Actuacion_Local" Association="Self.FK_Actuacion_Local">
+            <End Role="Locales" EntitySet="Locales" />
+            <End Role="Actuacion" EntitySet="Actuacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Actuacion_Musico" Association="Self.FK_Actuacion_Musico">
+            <End Role="Musicos" EntitySet="Musicos" />
+            <End Role="Actuacion" EntitySet="Actuacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chats_Local" Association="Self.FK_Chats_Local">
+            <End Role="Locales" EntitySet="Locales" />
+            <End Role="Chats" EntitySet="Chats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chats_Musico" Association="Self.FK_Chats_Musico">
+            <End Role="Musicos" EntitySet="Musicos" />
+            <End Role="Chats" EntitySet="Chats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Genero" Association="Self.FK_Genero">
+            <End Role="Generos_Musicales" EntitySet="Generos_Musicales" />
+            <End Role="Generos_Usuarios" EntitySet="Generos_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Locales_UsuarioMobil" Association="Self.FK_Locales_UsuarioMobil">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Locales" EntitySet="Locales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_Local" Association="Self.FK_Matches_Local">
+            <End Role="Locales" EntitySet="Locales" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_Musico" Association="Self.FK_Matches_Musico">
+            <End Role="Musicos" EntitySet="Musicos" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mensajes_Chat" Association="Self.FK_Mensajes_Chat">
+            <End Role="Chats" EntitySet="Chats" />
+            <End Role="Mensajes" EntitySet="Mensajes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Musicos_UsuarioMobil" Association="Self.FK_Musicos_UsuarioMobil">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Musicos" EntitySet="Musicos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_Incidencia" Association="Self.FK_Soporte_Incidencia">
+            <End Role="TipoIncidencia" EntitySet="TipoIncidencia" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_Tecnico" Association="Self.FK_Soporte_Tecnico">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_TecnicoCSharp" Association="Self.FK_Soporte_TecnicoCSharp">
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_Usuario" Association="Self.FK_Soporte_Usuario">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_UsuarioCSharp" Association="Self.FK_Soporte_UsuarioCSharp">
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario" Association="Self.FK_Usuario">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Generos_Usuarios" EntitySet="Generos_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_CSharp" Association="Self.FK_Usuario_CSharp">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioMobil_Notificacion" Association="Self.FK_UsuarioMobil_Notificacion">
+            <End Role="Notificaciones" EntitySet="Notificaciones" />
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioMobil_Roles" Association="Self.FK_UsuarioMobil_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioMobil_UsuarioID" Association="Self.FK_UsuarioMobil_UsuarioID">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Roles" Association="Self.FK_Usuarios_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuariosCSharp_Roles" Association="Self.FK_UsuariosCSharp_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Valoracion_Valorado" Association="Self.FK_Valoracion_Valorado">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Valoracion" EntitySet="Valoracion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Valoracion_Valorador" Association="Self.FK_Valoracion_Valorador">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Valoracion" EntitySet="Valoracion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dam05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Actuacion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Local_ID" Type="Int32" />
+          <Property Name="Musico_ID" Type="Int32" />
+          <NavigationProperty Name="Locales" Relationship="Self.FK_Actuacion_Local" FromRole="Actuacion" ToRole="Locales" />
+          <NavigationProperty Name="Musicos" Relationship="Self.FK_Actuacion_Musico" FromRole="Actuacion" ToRole="Musicos" />
+        </EntityType>
+        <EntityType Name="Chats">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Musico_ID" Type="Int32" />
+          <Property Name="Local_ID" Type="Int32" />
+          <NavigationProperty Name="Locales" Relationship="Self.FK_Chats_Local" FromRole="Chats" ToRole="Locales" />
+          <NavigationProperty Name="Musicos" Relationship="Self.FK_Chats_Musico" FromRole="Chats" ToRole="Musicos" />
+          <NavigationProperty Name="Mensajes" Relationship="Self.FK_Mensajes_Chat" FromRole="Chats" ToRole="Mensajes" />
+        </EntityType>
+        <EntityType Name="Generos_Musicales">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre_Genero" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Generos_Usuarios" Relationship="Self.FK_Genero" FromRole="Generos_Musicales" ToRole="Generos_Usuarios" />
+        </EntityType>
+        <EntityType Name="Generos_Usuarios">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Genero_Id" Type="Int32" />
+          <Property Name="Usuario_Id" Type="Int32" />
+          <NavigationProperty Name="Generos_Musicales" Relationship="Self.FK_Genero" FromRole="Generos_Usuarios" ToRole="Generos_Musicales" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_Usuario" FromRole="Generos_Usuarios" ToRole="UsuarioMobil" />
+        </EntityType>
+        <EntityType Name="Locales">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Valoracion_Media" Type="Double" />
+          <Property Name="Usuario_ID" Type="Int32" />
+          <Property Name="Ubicacion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Actuacion" Relationship="Self.FK_Actuacion_Local" FromRole="Locales" ToRole="Actuacion" />
+          <NavigationProperty Name="Chats" Relationship="Self.FK_Chats_Local" FromRole="Locales" ToRole="Chats" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_Locales_UsuarioMobil" FromRole="Locales" ToRole="UsuarioMobil" />
+          <NavigationProperty Name="Matches" Relationship="Self.FK_Matches_Local" FromRole="Locales" ToRole="Matches" />
+        </EntityType>
+        <EntityType Name="Matches">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Like_Local_ID" Type="Int32" />
+          <Property Name="Like_Musico_ID" Type="Int32" />
+          <Property Name="Estado" Type="Boolean" />
+          <NavigationProperty Name="Locales" Relationship="Self.FK_Matches_Local" FromRole="Matches" ToRole="Locales" />
+          <NavigationProperty Name="Musicos" Relationship="Self.FK_Matches_Musico" FromRole="Matches" ToRole="Musicos" />
+        </EntityType>
+        <EntityType Name="Mensajes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Chat_ID" Type="Int32" />
+          <Property Name="Emisor_ID" Type="Int32" />
+          <Property Name="Hora" Type="DateTime" Precision="3" />
+          <Property Name="Mensaje" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Chats" Relationship="Self.FK_Mensajes_Chat" FromRole="Mensajes" ToRole="Chats" />
+        </EntityType>
+        <EntityType Name="Musicos">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Usuario_ID" Type="Int32" />
+          <Property Name="Codigo_Postal" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Actuacion" Relationship="Self.FK_Actuacion_Musico" FromRole="Musicos" ToRole="Actuacion" />
+          <NavigationProperty Name="Chats" Relationship="Self.FK_Chats_Musico" FromRole="Musicos" ToRole="Chats" />
+          <NavigationProperty Name="Matches" Relationship="Self.FK_Matches_Musico" FromRole="Musicos" ToRole="Matches" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_Musicos_UsuarioMobil" FromRole="Musicos" ToRole="UsuarioMobil" />
+        </EntityType>
+        <EntityType Name="Notificaciones">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_UsuarioMobil_Notificacion" FromRole="Notificaciones" ToRole="UsuarioMobil" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre_Rol" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_UsuarioMobil_Roles" FromRole="Roles" ToRole="UsuarioMobil" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Roles" FromRole="Roles" ToRole="Usuarios" />
+          <NavigationProperty Name="UsuariosCSharp" Relationship="Self.FK_UsuariosCSharp_Roles" FromRole="Roles" ToRole="UsuariosCSharp" />
+        </EntityType>
+        <EntityType Name="Soporte">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Usuario_ID" Type="Int32" />
+          <Property Name="Tecnico_ID" Type="Int32" />
+          <Property Name="Tipo_Incidencia_ID" Type="Int32" />
+          <Property Name="Fecha_Creacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Fecha_Cierre" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="TipoIncidencia" Relationship="Self.FK_Soporte_Incidencia" FromRole="Soporte" ToRole="TipoIncidencia" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_Soporte_Tecnico" FromRole="Soporte" ToRole="UsuarioMobil" />
+          <NavigationProperty Name="UsuariosCSharp" Relationship="Self.FK_Soporte_TecnicoCSharp" FromRole="Soporte" ToRole="UsuariosCSharp" />
+          <NavigationProperty Name="UsuarioMobil1" Relationship="Self.FK_Soporte_Usuario" FromRole="Soporte" ToRole="UsuarioMobil" />
+          <NavigationProperty Name="UsuariosCSharp1" Relationship="Self.FK_Soporte_UsuarioCSharp" FromRole="Soporte" ToRole="UsuariosCSharp" />
+        </EntityType>
+        <EntityType Name="TipoIncidencia">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre_Incidencia" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Soporte" Relationship="Self.FK_Soporte_Incidencia" FromRole="TipoIncidencia" ToRole="Soporte" />
+        </EntityType>
+        <EntityType Name="UsuarioMobil">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Notificacion_ID" Type="Int32" />
+          <Property Name="ROL_ID" Type="Int32" />
+          <Property Name="Url_Imagen" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Usuario_ID" Type="Int32" />
+          <NavigationProperty Name="Generos_Usuarios" Relationship="Self.FK_Usuario" FromRole="UsuarioMobil" ToRole="Generos_Usuarios" />
+          <NavigationProperty Name="Locales" Relationship="Self.FK_Locales_UsuarioMobil" FromRole="UsuarioMobil" ToRole="Locales" />
+          <NavigationProperty Name="Musicos" Relationship="Self.FK_Musicos_UsuarioMobil" FromRole="UsuarioMobil" ToRole="Musicos" />
+          <NavigationProperty Name="Notificaciones" Relationship="Self.FK_UsuarioMobil_Notificacion" FromRole="UsuarioMobil" ToRole="Notificaciones" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK_UsuarioMobil_Roles" FromRole="UsuarioMobil" ToRole="Roles" />
+          <NavigationProperty Name="Soporte" Relationship="Self.FK_Soporte_Tecnico" FromRole="UsuarioMobil" ToRole="Soporte" />
+          <NavigationProperty Name="Soporte1" Relationship="Self.FK_Soporte_Usuario" FromRole="UsuarioMobil" ToRole="Soporte" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_UsuarioMobil_UsuarioID" FromRole="UsuarioMobil" ToRole="Usuarios" />
+          <NavigationProperty Name="Valoracion" Relationship="Self.FK_Valoracion_Valorado" FromRole="UsuarioMobil" ToRole="Valoracion" />
+          <NavigationProperty Name="Valoracion1" Relationship="Self.FK_Valoracion_Valorador" FromRole="UsuarioMobil" ToRole="Valoracion" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ROL_ID" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK_Usuarios_Roles" FromRole="Usuarios" ToRole="Roles" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_UsuarioMobil_UsuarioID" FromRole="Usuarios" ToRole="UsuarioMobil" />
+          <NavigationProperty Name="UsuariosCSharp" Relationship="Self.FK_Usuario_CSharp" FromRole="Usuarios" ToRole="UsuariosCSharp" />
+        </EntityType>
+        <EntityType Name="UsuariosCSharp">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="Usuario_Id" Type="Int32" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK_UsuariosCSharp_Roles" FromRole="UsuariosCSharp" ToRole="Roles" />
+          <NavigationProperty Name="Soporte" Relationship="Self.FK_Soporte_TecnicoCSharp" FromRole="UsuariosCSharp" ToRole="Soporte" />
+          <NavigationProperty Name="Soporte1" Relationship="Self.FK_Soporte_UsuarioCSharp" FromRole="UsuariosCSharp" ToRole="Soporte" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_CSharp" FromRole="UsuariosCSharp" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Valoracion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Valor" Type="Int32" />
+          <Property Name="Valorado_ID" Type="Int32" />
+          <Property Name="Valorador_ID" Type="Int32" />
+          <NavigationProperty Name="UsuarioMobil" Relationship="Self.FK_Valoracion_Valorado" FromRole="Valoracion" ToRole="UsuarioMobil" />
+          <NavigationProperty Name="UsuarioMobil1" Relationship="Self.FK_Valoracion_Valorador" FromRole="Valoracion" ToRole="UsuarioMobil" />
+        </EntityType>
+        <Association Name="FK_Actuacion_Local">
+          <End Role="Locales" Type="Self.Locales" Multiplicity="0..1" />
+          <End Role="Actuacion" Type="Self.Actuacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Actuacion">
+              <PropertyRef Name="Local_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Actuacion_Musico">
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="0..1" />
+          <End Role="Actuacion" Type="Self.Actuacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musicos">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Actuacion">
+              <PropertyRef Name="Musico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chats_Local">
+          <End Role="Locales" Type="Self.Locales" Multiplicity="0..1" />
+          <End Role="Chats" Type="Self.Chats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Chats">
+              <PropertyRef Name="Local_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chats_Musico">
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="0..1" />
+          <End Role="Chats" Type="Self.Chats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musicos">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Chats">
+              <PropertyRef Name="Musico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mensajes_Chat">
+          <End Role="Chats" Type="Self.Chats" Multiplicity="0..1" />
+          <End Role="Mensajes" Type="Self.Mensajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chats">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Mensajes">
+              <PropertyRef Name="Chat_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Genero">
+          <End Role="Generos_Musicales" Type="Self.Generos_Musicales" Multiplicity="0..1" />
+          <End Role="Generos_Usuarios" Type="Self.Generos_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Generos_Musicales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Generos_Usuarios">
+              <PropertyRef Name="Genero_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Generos_Usuarios" Type="Self.Generos_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Generos_Usuarios">
+              <PropertyRef Name="Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Locales_UsuarioMobil">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Locales" Type="Self.Locales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Locales">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_Local">
+          <End Role="Locales" Type="Self.Locales" Multiplicity="0..1" />
+          <End Role="Matches" Type="Self.Matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locales">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="Like_Local_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_Musico">
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="0..1" />
+          <End Role="Matches" Type="Self.Matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musicos">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="Like_Musico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Musicos_UsuarioMobil">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Musicos" Type="Self.Musicos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Musicos">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioMobil_Notificacion">
+          <End Role="Notificaciones" Type="Self.Notificaciones" Multiplicity="0..1" />
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Notificaciones">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuarioMobil">
+              <PropertyRef Name="Notificacion_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioMobil_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuarioMobil">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuariosCSharp_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuariosCSharp">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_Incidencia">
+          <End Role="TipoIncidencia" Type="Self.TipoIncidencia" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoIncidencia">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Tipo_Incidencia_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_Tecnico">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Tecnico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_TecnicoCSharp">
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuariosCSharp">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Tecnico_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_Usuario">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soporte_UsuarioCSharp">
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="0..1" />
+          <End Role="Soporte" Type="Self.Soporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuariosCSharp">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soporte">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioMobil_UsuarioID">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuarioMobil">
+              <PropertyRef Name="Usuario_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Valoracion_Valorado">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Valoracion" Type="Self.Valoracion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Valoracion">
+              <PropertyRef Name="Valorado_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Valoracion_Valorador">
+          <End Role="UsuarioMobil" Type="Self.UsuarioMobil" Multiplicity="0..1" />
+          <End Role="Valoracion" Type="Self.Valoracion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsuarioMobil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Valoracion">
+              <PropertyRef Name="Valorador_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_CSharp">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="UsuariosCSharp" Type="Self.UsuariosCSharp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsuariosCSharp">
+              <PropertyRef Name="Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dam05Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Actuacion" EntityType="Self.Actuacion" />
+          <EntitySet Name="Chats" EntityType="Self.Chats" />
+          <EntitySet Name="Generos_Musicales" EntityType="Self.Generos_Musicales" />
+          <EntitySet Name="Generos_Usuarios" EntityType="Self.Generos_Usuarios" />
+          <EntitySet Name="Locales" EntityType="Self.Locales" />
+          <EntitySet Name="Matches" EntityType="Self.Matches" />
+          <EntitySet Name="Mensajes" EntityType="Self.Mensajes" />
+          <EntitySet Name="Musicos" EntityType="Self.Musicos" />
+          <EntitySet Name="Notificaciones" EntityType="Self.Notificaciones" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Soporte" EntityType="Self.Soporte" />
+          <EntitySet Name="TipoIncidencia" EntityType="Self.TipoIncidencia" />
+          <EntitySet Name="UsuarioMobil" EntityType="Self.UsuarioMobil" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <EntitySet Name="UsuariosCSharp" EntityType="Self.UsuariosCSharp" />
+          <EntitySet Name="Valoracion" EntityType="Self.Valoracion" />
+          <AssociationSet Name="FK_Actuacion_Local" Association="Self.FK_Actuacion_Local">
+            <End Role="Locales" EntitySet="Locales" />
+            <End Role="Actuacion" EntitySet="Actuacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Actuacion_Musico" Association="Self.FK_Actuacion_Musico">
+            <End Role="Musicos" EntitySet="Musicos" />
+            <End Role="Actuacion" EntitySet="Actuacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chats_Local" Association="Self.FK_Chats_Local">
+            <End Role="Locales" EntitySet="Locales" />
+            <End Role="Chats" EntitySet="Chats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chats_Musico" Association="Self.FK_Chats_Musico">
+            <End Role="Musicos" EntitySet="Musicos" />
+            <End Role="Chats" EntitySet="Chats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mensajes_Chat" Association="Self.FK_Mensajes_Chat">
+            <End Role="Chats" EntitySet="Chats" />
+            <End Role="Mensajes" EntitySet="Mensajes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Genero" Association="Self.FK_Genero">
+            <End Role="Generos_Musicales" EntitySet="Generos_Musicales" />
+            <End Role="Generos_Usuarios" EntitySet="Generos_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario" Association="Self.FK_Usuario">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Generos_Usuarios" EntitySet="Generos_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Locales_UsuarioMobil" Association="Self.FK_Locales_UsuarioMobil">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Locales" EntitySet="Locales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_Local" Association="Self.FK_Matches_Local">
+            <End Role="Locales" EntitySet="Locales" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_Musico" Association="Self.FK_Matches_Musico">
+            <End Role="Musicos" EntitySet="Musicos" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Musicos_UsuarioMobil" Association="Self.FK_Musicos_UsuarioMobil">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Musicos" EntitySet="Musicos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioMobil_Notificacion" Association="Self.FK_UsuarioMobil_Notificacion">
+            <End Role="Notificaciones" EntitySet="Notificaciones" />
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioMobil_Roles" Association="Self.FK_UsuarioMobil_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Roles" Association="Self.FK_Usuarios_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuariosCSharp_Roles" Association="Self.FK_UsuariosCSharp_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_Incidencia" Association="Self.FK_Soporte_Incidencia">
+            <End Role="TipoIncidencia" EntitySet="TipoIncidencia" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_Tecnico" Association="Self.FK_Soporte_Tecnico">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_TecnicoCSharp" Association="Self.FK_Soporte_TecnicoCSharp">
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_Usuario" Association="Self.FK_Soporte_Usuario">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soporte_UsuarioCSharp" Association="Self.FK_Soporte_UsuarioCSharp">
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+            <End Role="Soporte" EntitySet="Soporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioMobil_UsuarioID" Association="Self.FK_UsuarioMobil_UsuarioID">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Valoracion_Valorado" Association="Self.FK_Valoracion_Valorado">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Valoracion" EntitySet="Valoracion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Valoracion_Valorador" Association="Self.FK_Valoracion_Valorador">
+            <End Role="UsuarioMobil" EntitySet="UsuarioMobil" />
+            <End Role="Valoracion" EntitySet="Valoracion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_CSharp" Association="Self.FK_Usuario_CSharp">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="UsuariosCSharp" EntitySet="UsuariosCSharp" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dam05ModelStoreContainer" CdmEntityContainer="dam05Entities1">
+          <EntitySetMapping Name="Actuacion">
+            <EntityTypeMapping TypeName="dam05Model.Actuacion">
+              <MappingFragment StoreEntitySet="Actuacion">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Local_ID" ColumnName="Local_ID" />
+                <ScalarProperty Name="Musico_ID" ColumnName="Musico_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chats">
+            <EntityTypeMapping TypeName="dam05Model.Chats">
+              <MappingFragment StoreEntitySet="Chats">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Musico_ID" ColumnName="Musico_ID" />
+                <ScalarProperty Name="Local_ID" ColumnName="Local_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Generos_Musicales">
+            <EntityTypeMapping TypeName="dam05Model.Generos_Musicales">
+              <MappingFragment StoreEntitySet="Generos_Musicales">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nombre_Genero" ColumnName="Nombre_Genero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Generos_Usuarios">
+            <EntityTypeMapping TypeName="dam05Model.Generos_Usuarios">
+              <MappingFragment StoreEntitySet="Generos_Usuarios">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Genero_Id" ColumnName="Genero_Id" />
+                <ScalarProperty Name="Usuario_Id" ColumnName="Usuario_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locales">
+            <EntityTypeMapping TypeName="dam05Model.Locales">
+              <MappingFragment StoreEntitySet="Locales">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Valoracion_Media" ColumnName="Valoracion_Media" />
+                <ScalarProperty Name="Usuario_ID" ColumnName="Usuario_ID" />
+                <ScalarProperty Name="Ubicacion" ColumnName="Ubicacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Matches">
+            <EntityTypeMapping TypeName="dam05Model.Matches">
+              <MappingFragment StoreEntitySet="Matches">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Like_Local_ID" ColumnName="Like_Local_ID" />
+                <ScalarProperty Name="Like_Musico_ID" ColumnName="Like_Musico_ID" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mensajes">
+            <EntityTypeMapping TypeName="dam05Model.Mensajes">
+              <MappingFragment StoreEntitySet="Mensajes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Chat_ID" ColumnName="Chat_ID" />
+                <ScalarProperty Name="Emisor_ID" ColumnName="Emisor_ID" />
+                <ScalarProperty Name="Hora" ColumnName="Hora" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Musicos">
+            <EntityTypeMapping TypeName="dam05Model.Musicos">
+              <MappingFragment StoreEntitySet="Musicos">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Usuario_ID" ColumnName="Usuario_ID" />
+                <ScalarProperty Name="Codigo_Postal" ColumnName="Codigo_Postal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notificaciones">
+            <EntityTypeMapping TypeName="dam05Model.Notificaciones">
+              <MappingFragment StoreEntitySet="Notificaciones">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="dam05Model.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nombre_Rol" ColumnName="Nombre_Rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Soporte">
+            <EntityTypeMapping TypeName="dam05Model.Soporte">
+              <MappingFragment StoreEntitySet="Soporte">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Usuario_ID" ColumnName="Usuario_ID" />
+                <ScalarProperty Name="Tecnico_ID" ColumnName="Tecnico_ID" />
+                <ScalarProperty Name="Tipo_Incidencia_ID" ColumnName="Tipo_Incidencia_ID" />
+                <ScalarProperty Name="Fecha_Creacion" ColumnName="Fecha_Creacion" />
+                <ScalarProperty Name="Fecha_Cierre" ColumnName="Fecha_Cierre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoIncidencia">
+            <EntityTypeMapping TypeName="dam05Model.TipoIncidencia">
+              <MappingFragment StoreEntitySet="TipoIncidencia">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nombre_Incidencia" ColumnName="Nombre_Incidencia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsuarioMobil">
+            <EntityTypeMapping TypeName="dam05Model.UsuarioMobil">
+              <MappingFragment StoreEntitySet="UsuarioMobil">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Notificacion_ID" ColumnName="Notificacion_ID" />
+                <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+                <ScalarProperty Name="Url_Imagen" ColumnName="Url_Imagen" />
+                <ScalarProperty Name="Usuario_ID" ColumnName="Usuario_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="dam05Model.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsuariosCSharp">
+            <EntityTypeMapping TypeName="dam05Model.UsuariosCSharp">
+              <MappingFragment StoreEntitySet="UsuariosCSharp">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Usuario_Id" ColumnName="Usuario_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Valoracion">
+            <EntityTypeMapping TypeName="dam05Model.Valoracion">
+              <MappingFragment StoreEntitySet="Valoracion">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Valorado_ID" ColumnName="Valorado_ID" />
+                <ScalarProperty Name="Valorador_ID" ColumnName="Valorador_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
