@@ -10,6 +10,7 @@ namespace BOJAPI
         public static void Register(HttpConfiguration config)
         {
             // Configuración y servicios de Web API
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
             // Rutas de Web API
             config.MapHttpAttributeRoutes();
