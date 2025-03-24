@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.UI.WebControls;
 using BOJAPI.Models;
 
 namespace BOJAPI.Controllers
@@ -43,6 +44,68 @@ namespace BOJAPI.Controllers
             }
             return result;
         }
+
+        [HttpGet]
+        [Route("api/Chats/Musician/{id}")]
+        // GET: api/Chats/5
+        public async Task<IHttpActionResult> GetMusicianChats(int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var chatsConMensajes = await db.Chats
+                             .Include(c => c.Mensajes)
+                             .Where(c => c.Musico_ID == userID)
+                             .ToListAsync();
+
+                if (chatsConMensajes == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+
+                    result = Ok(chatsConMensajes);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
+        }
+
+
+        [HttpGet]
+        [Route("api/Chats/Local/{userID}")]
+        public async Task<IHttpActionResult> GetLocalChats(int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var chatsConMensajes = await db.Chats
+                                                .Include(c => c.Mensajes)
+                                                .Where(c => c.Local_ID == userID)
+                                                .ToListAsync();
+
+                if (chatsConMensajes == null || !chatsConMensajes.Any())
+                {
+                    result = NotFound();
+                }
+                else
+                {
+                    result = Ok(chatsConMensajes);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
+        }
+
 
         // PUT: api/Chats/5
         [ResponseType(typeof(void))]

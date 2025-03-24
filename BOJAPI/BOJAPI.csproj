@@ -163,6 +163,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Clases\Chat.cs" />
+    <Compile Include="Clases\Mensajes.cs" />
     <Compile Include="Clases\Utilities.cs" />
     <Compile Include="Controllers\ActuacionsController.cs" />
     <Compile Include="Controllers\ChatsController.cs" />
