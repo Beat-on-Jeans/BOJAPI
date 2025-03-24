@@ -25,6 +25,36 @@ namespace BOJAPI.Controllers
             return db.Mensajes;
         }
 
+        [HttpGet]
+        [Route("api/Mensajes/Mensajes/{chat_ID}")]
+        // GET: api/Chats/5
+        public async Task<IHttpActionResult> GetChatMensajes(int chat_ID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var mensajes = await db.Mensajes
+                             .Where(c => c.Chat_ID == chat_ID)
+                             .ToListAsync();
+
+                if (mensajes == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+
+                    result = Ok(mensajes);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
+        }
+
         // GET: api/Mensajes/5
         [ResponseType(typeof(Mensajes))]
         public async Task<IHttpActionResult> GetMensajes(int id)
