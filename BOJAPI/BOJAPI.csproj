@@ -179,6 +179,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SoportesController.cs" />
     <Compile Include="Controllers\TipoIncidenciasController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UsuarioMobilsController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\UsuariosCSharpsController.cs" />
