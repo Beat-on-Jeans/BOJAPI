@@ -43,6 +43,33 @@ namespace BOJAPI.Controllers
             return result;
         }
 
+
+        [HttpGet]
+        [Route("api/Usuarios/{userID}")]
+        public async Task<IHttpActionResult> GetUser(int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var user = await db.Usuarios.FirstOrDefaultAsync(c => c.ID == userID);
+
+                if (user == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+                    result = Ok(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
+        }
+
         // PUT: api/Usuarios/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutUsuarios(int id, Usuarios _usuarios)
