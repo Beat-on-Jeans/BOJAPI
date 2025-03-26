@@ -45,6 +45,37 @@ namespace BOJAPI.Controllers
             return result;
         }
 
+
+        [HttpGet]
+        [Route("api/MusicGenders/{userID}")]
+        public async Task<IHttpActionResult> GetMusicGendersChats(int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var generos = await db.Generos_Usuarios
+                             .Include(c => c.Generos_Musicales)
+                             .Where(c => c.Usuario_Id == userID)
+                             .ToListAsync();
+
+                if (generos == null || !generos.Any())
+                {
+                    result = NotFound();
+                }
+                else
+                {
+
+                    result = Ok(generos);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
+        }
+
         // PUT: api/Generos_Usuarios/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutGeneros_Usuarios(int id, Generos_Usuarios _generos_Usuarios)
