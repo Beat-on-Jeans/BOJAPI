@@ -84,7 +84,9 @@ namespace BOJAPI.Controllers
             db.Configuration.LazyLoadingEnabled = false;
             try
             {
-                var chat = await db.Chats.FirstOrDefaultAsync(c => c.ID == chatID);
+                var chat = await db.Chats
+                    .Include(c => c.Mensajes)
+                    .FirstOrDefaultAsync(c => c.ID == chatID);
 
                 if (chat == null)
                 {
