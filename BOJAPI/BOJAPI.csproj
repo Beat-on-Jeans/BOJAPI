@@ -164,8 +164,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Clases\Chat.cs" />
-    <Compile Include="Clases\GenerosMusicales.cs" />
-    <Compile Include="Clases\Generos_Usuarios.cs" />
+    <Compile Include="Clases\GeneroDTO.cs" />
+    <Compile Include="Clases\Generos_Musicales.cs" />
+    <Compile Include="Clases\GeneroUsuario.cs" />
     <Compile Include="Clases\Mensajes.cs" />
     <Compile Include="Clases\Utilities.cs" />
     <Compile Include="Controllers\ActuacionsController.cs" />
