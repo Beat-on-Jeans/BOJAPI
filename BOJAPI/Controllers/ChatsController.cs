@@ -46,27 +46,26 @@ namespace BOJAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/Chats/Musician/{id}")]
-        // GET: api/Chats/5
+        [Route("api/Chats/Musician/{userID}")]
         public async Task<IHttpActionResult> GetMusicianChats(int userID)
         {
             IHttpActionResult result;
             db.Configuration.LazyLoadingEnabled = false;
             try
             {
-                var chatsConMensajes = await db.Chats
+                var chats = await db.Chats
                              .Include(c => c.Mensajes)
                              .Where(c => c.Musico_ID == userID)
                              .ToListAsync();
 
-                if (chatsConMensajes == null)
+                if (chats == null || !chats.Any())
                 {
                     result = NotFound();
                 }
                 else
                 {
 
-                    result = Ok(chatsConMensajes);
+                    result = Ok(chats);
                 }
             }
             catch (Exception ex)
@@ -75,6 +74,36 @@ namespace BOJAPI.Controllers
             }
             return result;
         }
+
+        [HttpGet]
+        [Route("api/Chats/Local/{userID}")]
+        public async Task<IHttpActionResult> GetLocalChats(int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var chats = await db.Chats
+                            .Include(c => c.Mensajes)
+                            .Where(c => c.Local_ID == userID)
+                            .ToListAsync();
+
+                if (chats == null || !chats.Any())
+                {
+                    result = NotFound();
+                }
+                else
+                {
+                    result = Ok(chats);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
+        }
+
 
         [HttpGet]
         [Route("api/Chats/{chatID}")]
@@ -95,35 +124,6 @@ namespace BOJAPI.Controllers
                 else
                 {
                     result = Ok(chat);
-                }
-            }
-            catch (Exception ex)
-            {
-                result = InternalServerError(ex);
-            }
-            return result;
-        }
-
-        [HttpGet]
-        [Route("api/Chats/Local/{userID}")]
-        public async Task<IHttpActionResult> GetLocalChats(int userID)
-        {
-            IHttpActionResult result;
-            db.Configuration.LazyLoadingEnabled = false;
-            try
-            {
-                var chatsConMensajes = await db.Chats
-                                                .Include(c => c.Mensajes)
-                                                .Where(c => c.Local_ID == userID)
-                                                .ToListAsync();
-
-                if (chatsConMensajes == null || !chatsConMensajes.Any())
-                {
-                    result = NotFound();
-                }
-                else
-                {
-                    result = Ok(chatsConMensajes);
                 }
             }
             catch (Exception ex)
