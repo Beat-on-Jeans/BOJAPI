@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using BOJAPI.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace BOJAPI.Controllers
 {
@@ -42,7 +43,6 @@ namespace BOJAPI.Controllers
             }
             return result;
         }
-
 
         [HttpGet]
         [Route("api/Usuarios/{userID}")]
@@ -136,6 +136,48 @@ namespace BOJAPI.Controllers
                 {
                     await db.SaveChangesAsync();
                     result = CreatedAtRoute("DefaultApi", new { id = _usuarios.ID }, _usuarios);
+                }
+                catch (DbUpdateException ex)
+                {
+                    SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                    missatge = Clases.Utilities.MissatgeError(sqlException);
+                    result = BadRequest(missatge);
+                }
+            }
+
+            return result;
+        }
+
+
+        // POST: api/Usuarios
+        [HttpPost]
+        [Route("api/Usuarios/CreateUsuarioMobils/{_usuarios}")]
+        public async Task<IHttpActionResult> CreateUsuarioMobil(Usuarios _usuarios, UsuarioMobil _usuarioMobil)
+        {
+            IHttpActionResult result;
+
+            if (!ModelState.IsValid)
+            {
+                result = BadRequest(ModelState);
+            }
+            else
+            {
+                db.Usuarios.Add(_usuarios);
+                String missatge = "";
+                try
+                {
+                    await db.SaveChangesAsync();
+                    result = CreatedAtRoute("DefaultApi", new { id = _usuarios.ID }, _usuarios);
+                    db.UsuarioMobil.Add(_usuarioMobil);
+                    if(_usuarioMobil.ROL_ID == 1)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                    
                 }
                 catch (DbUpdateException ex)
                 {

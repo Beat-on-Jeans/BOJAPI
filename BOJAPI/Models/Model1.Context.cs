@@ -29,10 +29,8 @@ namespace BOJAPI.Models
         public virtual DbSet<Chats> Chats { get; set; }
         public virtual DbSet<Generos_Musicales> Generos_Musicales { get; set; }
         public virtual DbSet<Generos_Usuarios> Generos_Usuarios { get; set; }
-        public virtual DbSet<Locales> Locales { get; set; }
         public virtual DbSet<Matches> Matches { get; set; }
         public virtual DbSet<Mensajes> Mensajes { get; set; }
-        public virtual DbSet<Musicos> Musicos { get; set; }
         public virtual DbSet<Notificaciones> Notificaciones { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Soporte> Soporte { get; set; }

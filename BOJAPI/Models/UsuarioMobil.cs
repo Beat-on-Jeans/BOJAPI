@@ -17,9 +17,13 @@ namespace BOJAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UsuarioMobil()
         {
+            this.Actuacion = new HashSet<Actuacion>();
+            this.Actuacion1 = new HashSet<Actuacion>();
+            this.Chats = new HashSet<Chats>();
+            this.Chats1 = new HashSet<Chats>();
             this.Generos_Usuarios = new HashSet<Generos_Usuarios>();
-            this.Locales = new HashSet<Locales>();
-            this.Musicos = new HashSet<Musicos>();
+            this.Matches = new HashSet<Matches>();
+            this.Matches1 = new HashSet<Matches>();
             this.Soporte = new HashSet<Soporte>();
             this.Soporte1 = new HashSet<Soporte>();
             this.Valoracion = new HashSet<Valoracion>();
@@ -31,13 +35,23 @@ namespace BOJAPI.Models
         public Nullable<int> ROL_ID { get; set; }
         public string Url_Imagen { get; set; }
         public Nullable<int> Usuario_ID { get; set; }
+        public Nullable<double> ValoracionTotal { get; set; }
+        public string Ubicacion { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Actuacion> Actuacion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Actuacion> Actuacion1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chats> Chats { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chats> Chats1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Generos_Usuarios> Generos_Usuarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Locales> Locales { get; set; }
+        public virtual ICollection<Matches> Matches { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Musicos> Musicos { get; set; }
+        public virtual ICollection<Matches> Matches1 { get; set; }
         public virtual Notificaciones Notificaciones { get; set; }
         public virtual Roles Roles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using BOJAPI.Models;
+using BOJAPI.Clases;
 
 namespace BOJAPI.Controllers
 {
@@ -54,10 +55,14 @@ namespace BOJAPI.Controllers
             db.Configuration.LazyLoadingEnabled = false;
             try
             {
+                // Proyectar solo los géneros necesarios usando un DTO
                 var generos = await db.Generos_Usuarios
-                             .Include(c => c.Generos_Musicales)
-                             .Where(c => c.Usuario_Id == userID)
-                             .ToListAsync();
+                            .Where(c => c.Usuario_Id == userID)
+                            .Select(c => new GeneroDTO
+                            {
+                                Nombre_Genero = c.Generos_Musicales.Nombre_Genero
+                            })
+                            .ToListAsync();
 
                 if (generos == null || !generos.Any())
                 {
@@ -65,16 +70,17 @@ namespace BOJAPI.Controllers
                 }
                 else
                 {
-
-                    result = Ok(generos);
+                    result = Ok(generos); // Devuelve solo los géneros en formato DTO
                 }
             }
             catch (Exception ex)
             {
+                // Registro de la excepción para su seguimiento
                 result = InternalServerError(ex);
             }
             return result;
         }
+
 
         // PUT: api/Generos_Usuarios/5
         [ResponseType(typeof(void))]

@@ -164,8 +164,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Clases\Chat.cs" />
-    <Compile Include="Clases\GenerosMusicales.cs" />
-    <Compile Include="Clases\Generos_Usuarios.cs" />
+    <Compile Include="Clases\GeneroDTO.cs" />
+    <Compile Include="Clases\Generos_Musicales.cs" />
+    <Compile Include="Clases\GeneroUsuario.cs" />
     <Compile Include="Clases\Mensajes.cs" />
     <Compile Include="Clases\Utilities.cs" />
     <Compile Include="Controllers\ActuacionsController.cs" />
@@ -173,10 +174,8 @@
     <Compile Include="Controllers\Generos_MusicalesController.cs" />
     <Compile Include="Controllers\Generos_UsuariosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LocalesController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\MensajesController.cs" />
-    <Compile Include="Controllers\MusicosController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SoportesController.cs" />
@@ -202,9 +201,6 @@
     <Compile Include="Models\Generos_Usuarios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Locales.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Matches.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -225,9 +221,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Musicos.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Notificaciones.cs">
       <DependentUpon>Model1.tt</DependentUpon>
