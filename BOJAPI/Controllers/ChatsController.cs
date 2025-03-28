@@ -46,8 +46,8 @@ namespace BOJAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/Chats/{userID}")]
-        public async Task<IHttpActionResult> GetMusicianChats(int userID)
+        [Route("api/ChatsUser/{userID}")]
+        public async Task<IHttpActionResult> GetUserChats(int userID)
         {
             IHttpActionResult result;
             db.Configuration.LazyLoadingEnabled = false;
@@ -77,7 +77,7 @@ namespace BOJAPI.Controllers
 
 
         [HttpGet]
-        [Route("api/Chats/{chatID}")]
+        [Route("api/Chat/{chatID}")]
         public async Task<IHttpActionResult> GetChat(int chatID)
         {
             IHttpActionResult result;
