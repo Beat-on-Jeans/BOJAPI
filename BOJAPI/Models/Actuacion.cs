@@ -16,10 +16,10 @@ namespace BOJAPI.Models
     {
         public int ID { get; set; }
         public System.DateTime Fecha { get; set; }
-        public Nullable<int> Local_ID { get; set; }
-        public Nullable<int> Musico_ID { get; set; }
+        public int UsuarioMobil_Local_ID { get; set; }
+        public int UsuarioMobil_Musico_ID { get; set; }
     
-        public virtual Locales Locales { get; set; }
-        public virtual Musicos Musicos { get; set; }
+        public virtual UsuarioMobil UsuarioMobil { get; set; }
+        public virtual UsuarioMobil UsuarioMobil1 { get; set; }
     }
 }

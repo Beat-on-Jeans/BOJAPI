@@ -5,46 +5,42 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="705dcd59982c469caa5ffcec29a336f7" Name="Diagram1" ZoomLevel="83">
-        <EntityTypeShape EntityType="dam05Model.Actuacion" Width="1.5" PointX="9.75" PointY="21" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Chats" Width="1.5" PointX="12.75" PointY="18" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Generos_Musicales" Width="1.5" PointX="8.25" PointY="25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Generos_Usuarios" Width="1.5" PointX="10.5" PointY="17.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Locales" Width="1.5" PointX="7.5" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Matches" Width="1.5" PointX="12.75" PointY="21" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Mensajes" Width="1.5" PointX="15" PointY="18" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Musicos" Width="1.5" PointX="7.5" PointY="21.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Notificaciones" Width="1.5" PointX="3" PointY="18" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Roles" Width="1.5" PointX="0.75" PointY="13" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Soporte" Width="1.5" PointX="10.5" PointY="13.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.TipoIncidencia" Width="1.5" PointX="8.25" PointY="11" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.UsuarioMobil" Width="1.5" PointX="5.25" PointY="16.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Usuarios" Width="1.5" PointX="3" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.UsuariosCSharp" Width="1.5" PointX="8.25" PointY="17.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dam05Model.Valoracion" Width="1.5" PointX="7.5" PointY="27.625" IsExpanded="true" />
-        <AssociationConnector Association="dam05Model.FK_Actuacion_Local" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Actuacion_Musico" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Chats_Local" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Chats_Musico" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Mensajes_Chat" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Genero" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Locales_UsuarioMobil" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Matches_Local" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Matches_Musico" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Musicos_UsuarioMobil" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_UsuarioMobil_Notificacion" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_UsuarioMobil_Roles" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Usuarios_Roles" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_UsuariosCSharp_Roles" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Soporte_Incidencia" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Soporte_Tecnico" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Soporte_TecnicoCSharp" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Soporte_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Soporte_UsuarioCSharp" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_UsuarioMobil_UsuarioID" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Valoracion_Valorado" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Valoracion_Valorador" ManuallyRouted="false" />
-        <AssociationConnector Association="dam05Model.FK_Usuario_CSharp" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dam05Model.Actuacion" Width="1.5" PointX="7.5" PointY="25.25" />
+        <EntityTypeShape EntityType="dam05Model.Chats" Width="1.5" PointX="7.5" PointY="12.875" />
+        <EntityTypeShape EntityType="dam05Model.Generos_Musicales" Width="1.5" PointX="8.25" PointY="9.5" />
+        <EntityTypeShape EntityType="dam05Model.Generos_Usuarios" Width="1.5" PointX="10.5" PointY="17.25" />
+        <EntityTypeShape EntityType="dam05Model.Matches" Width="1.5" PointX="7.5" PointY="28.25" />
+        <EntityTypeShape EntityType="dam05Model.Mensajes" Width="1.5" PointX="9.75" PointY="12.875" />
+        <EntityTypeShape EntityType="dam05Model.Notificaciones" Width="1.5" PointX="3" PointY="17.5" />
+        <EntityTypeShape EntityType="dam05Model.Roles" Width="1.5" PointX="0.75" PointY="11.25" />
+        <EntityTypeShape EntityType="dam05Model.Soporte" Width="1.5" PointX="13.5" PointY="16.75" />
+        <EntityTypeShape EntityType="dam05Model.TipoIncidencia" Width="1.5" PointX="11.25" PointY="20.5" />
+        <EntityTypeShape EntityType="dam05Model.UsuarioMobil" Width="1.5" PointX="5.25" PointY="15.75" />
+        <EntityTypeShape EntityType="dam05Model.Usuarios" Width="1.5" PointX="3" PointY="22.75" />
+        <EntityTypeShape EntityType="dam05Model.UsuariosCSharp" Width="1.5" PointX="8.25" PointY="17.125" />
+        <EntityTypeShape EntityType="dam05Model.Valoracion" Width="1.5" PointX="7.5" PointY="20.5" />
+        <AssociationConnector Association="dam05Model.FK_Actuacion_UsuarioMobil_Local" />
+        <AssociationConnector Association="dam05Model.FK_Actuacion_UsuarioMobil_Musico" />
+        <AssociationConnector Association="dam05Model.FK_Chats_UsuarioMobil_Local" />
+        <AssociationConnector Association="dam05Model.FK_Chats_UsuarioMobil_Musico" />
+        <AssociationConnector Association="dam05Model.FK_Mensajes_Chat" />
+        <AssociationConnector Association="dam05Model.FK_Genero" />
+        <AssociationConnector Association="dam05Model.FK_Usuario" />
+        <AssociationConnector Association="dam05Model.FK_Matches_UsuarioMobil_Local" />
+        <AssociationConnector Association="dam05Model.FK_Matches_UsuarioMobil_Musico" />
+        <AssociationConnector Association="dam05Model.FK_UsuarioMobil_Notificacion" />
+        <AssociationConnector Association="dam05Model.FK_UsuarioMobil_Roles" />
+        <AssociationConnector Association="dam05Model.FK_Usuarios_Roles" />
+        <AssociationConnector Association="dam05Model.FK_UsuariosCSharp_Roles" />
+        <AssociationConnector Association="dam05Model.FK_Soporte_Incidencia" />
+        <AssociationConnector Association="dam05Model.FK_Soporte_Tecnico" />
+        <AssociationConnector Association="dam05Model.FK_Soporte_TecnicoCSharp" />
+        <AssociationConnector Association="dam05Model.FK_Soporte_Usuario" />
+        <AssociationConnector Association="dam05Model.FK_Soporte_UsuarioCSharp" />
+        <AssociationConnector Association="dam05Model.FK_UsuarioMobil_UsuarioID" />
+        <AssociationConnector Association="dam05Model.FK_Valoracion_Valorado" />
+        <AssociationConnector Association="dam05Model.FK_Valoracion_Valorador" />
+        <AssociationConnector Association="dam05Model.FK_Usuario_CSharp" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
