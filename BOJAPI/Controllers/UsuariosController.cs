@@ -45,6 +45,7 @@ namespace BOJAPI.Controllers
             return result;
         }
 
+        // GET: api/Usuarios/{ID}
         [HttpGet]
         [Route("api/Usuarios/{userID}")]
         public async Task<IHttpActionResult> GetUser(int userID)
@@ -159,7 +160,45 @@ namespace BOJAPI.Controllers
             return Ok(usuario);  // Devolver el objeto Usuario creado
         }
 
+        // POST: api/User/Login
+        [HttpPost]
+        [Route("api/User/Login")]
+        public async Task<IHttpActionResult> Login(UsuarioRecibido usuarioRecibido)
+        {
+            // Paso 2: Buscar el usuario en la base de datos por correo
+            var usuario = await db.Usuarios
+                .FirstOrDefaultAsync(u => u.Correo == usuarioRecibido.Correo);
 
+            if (usuario == null)
+            {
+                return Unauthorized(); // No existe un usuario con ese correo
+            }
+
+            // Paso 3: Validar si la contraseña coincide (esto es solo un ejemplo, asegúrate de usar hashing para contraseñas)
+            if (usuario.Contrasena != usuarioRecibido.Contrasena)
+            {
+                return Unauthorized(); // Contraseña incorrecta
+            }
+
+            // Paso 4: Buscar el usuario en la tabla UsuarioMobil usando el ID de Usuario
+            var usuarioMobil = await db.UsuarioMobil
+                .FirstOrDefaultAsync(um => um.Usuario_ID == usuario.ID);
+
+            // Paso 5: Devolver toda la información del usuario junto con los datos de UsuarioMobil
+            var usuarioRecibidoCompleto = new UsuarioRecibido
+            {
+                ID = usuario.ID,
+                Nombre = usuario.Nombre,
+                Correo = usuario.Correo,
+                Contrasena = usuario.Contrasena,
+                ROL_ID = (int)usuario.ROL_ID,
+                Url_Imagen = usuarioMobil.Url_Imagen,
+                Ubicacion = usuarioMobil.Ubicacion
+            };
+
+            return Ok(usuarioRecibidoCompleto);
+        }
+    
 
         // DELETE: api/Usuarios/5
         [ResponseType(typeof(Usuarios))]
