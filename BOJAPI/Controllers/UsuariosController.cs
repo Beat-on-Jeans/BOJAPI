@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using BOJAPI.Clases;
 using BOJAPI.Models;
 using Microsoft.Ajax.Utilities;
 
@@ -118,77 +119,47 @@ namespace BOJAPI.Controllers
             return result;
         }
 
-        // POST: api/Usuarios
-        [ResponseType(typeof(Usuarios))]
-        public async Task<IHttpActionResult> PostUsuarios(Usuarios _usuarios)
-        {
-            IHttpActionResult result;
-
-            if (!ModelState.IsValid)
-            {
-                result = BadRequest(ModelState);
-            }
-            else
-            {
-                db.Usuarios.Add(_usuarios);
-                String missatge = "";
-                try
-                {
-                    await db.SaveChangesAsync();
-                    result = CreatedAtRoute("DefaultApi", new { id = _usuarios.ID }, _usuarios);
-                }
-                catch (DbUpdateException ex)
-                {
-                    SqlException sqlException = (SqlException)ex.InnerException.InnerException;
-                    missatge = Clases.Utilities.MissatgeError(sqlException);
-                    result = BadRequest(missatge);
-                }
-            }
-
-            return result;
-        }
-
-
-        // POST: api/Usuarios
+        // POST: api/User
         [HttpPost]
-        [Route("api/Usuarios/CreateUsuarioMobils/{_usuarios}")]
-        public async Task<IHttpActionResult> CreateUsuarioMobil(Usuarios _usuarios, UsuarioMobil _usuarioMobil)
+        [Route("api/User")]
+        public async Task<IHttpActionResult> CreateUser(UsuarioRecibido usuarioRecibido)
         {
-            IHttpActionResult result;
+            // Paso 1: Crear el objeto Usuario
+            var usuario = new Usuarios
 
-            if (!ModelState.IsValid)
             {
-                result = BadRequest(ModelState);
-            }
-            else
+                ROL_ID = usuarioRecibido.ROL_ID,
+                Nombre = usuarioRecibido.Nombre,
+                Correo = usuarioRecibido.Correo,
+                Contrasena = usuarioRecibido.Contrasena
+            };
+
+            // Paso 2: Añadir el usuario a la base de datos
+            db.Usuarios.Add(usuario);
+            await db.SaveChangesAsync(); // Guarda el usuario en la tabla Usuarios
+
+           Usuarios newUser = db.Usuarios.FirstOrDefault(c => c.Correo == usuarioRecibido.Correo);
+
+            // Paso 3: Crear el objeto UsuarioMobil y asignarle el Notificacion_ID
+            var usuarioMobil = new UsuarioMobil
             {
-                db.Usuarios.Add(_usuarios);
-                String missatge = "";
-                try
-                {
-                    await db.SaveChangesAsync();
-                    result = CreatedAtRoute("DefaultApi", new { id = _usuarios.ID }, _usuarios);
-                    db.UsuarioMobil.Add(_usuarioMobil);
-                    if(_usuarioMobil.ROL_ID == 1)
-                    {
+                Notificacion_ID = null,  // Aquí asignamos el ID del Usuario recién creado
+                ROL_ID = usuarioRecibido.ROL_ID,
+                Url_Imagen = usuarioRecibido.Url_Imagen,
+                ValoracionTotal = null,
+                Ubicacion = usuarioRecibido.Ubicacion,
+                Usuario_ID = newUser.ID,
+                Descripcion = null
+            };
 
-                    }
-                    else
-                    {
+            // Paso 4: Añadir el UsuarioMobil a la base de datos
+            db.UsuarioMobil.Add(usuarioMobil);
+            await db.SaveChangesAsync();  // Guarda el usuario movil en la tabla UsuarioMobil
 
-                    }
-                    
-                }
-                catch (DbUpdateException ex)
-                {
-                    SqlException sqlException = (SqlException)ex.InnerException.InnerException;
-                    missatge = Clases.Utilities.MissatgeError(sqlException);
-                    result = BadRequest(missatge);
-                }
-            }
-
-            return result;
+            return Ok(usuario);  // Devolver el objeto Usuario creado
         }
+
+
 
         // DELETE: api/Usuarios/5
         [ResponseType(typeof(Usuarios))]

@@ -37,6 +37,7 @@ namespace BOJAPI.Models
         public Nullable<int> Usuario_ID { get; set; }
         public Nullable<double> ValoracionTotal { get; set; }
         public string Ubicacion { get; set; }
+        public string Descripcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Actuacion> Actuacion { get; set; }

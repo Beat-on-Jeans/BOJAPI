@@ -168,6 +168,7 @@
     <Compile Include="Clases\Generos_Musicales.cs" />
     <Compile Include="Clases\GeneroUsuario.cs" />
     <Compile Include="Clases\Mensajes.cs" />
+    <Compile Include="Clases\UsuarioRecibido.cs" />
     <Compile Include="Clases\Utilities.cs" />
     <Compile Include="Controllers\ActuacionsController.cs" />
     <Compile Include="Controllers\ChatsController.cs" />

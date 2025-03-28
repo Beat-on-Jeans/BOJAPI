@@ -99,6 +99,7 @@
           <Property Name="Usuario_ID" Type="int" />
           <Property Name="ValoracionTotal" Type="float" />
           <Property Name="Ubicacion" Type="varchar" MaxLength="255" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Usuarios">
           <Key>
@@ -718,6 +719,7 @@
           <Property Name="Usuario_ID" Type="Int32" />
           <Property Name="ValoracionTotal" Type="Double" />
           <Property Name="Ubicacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Actuacion" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Local" FromRole="UsuarioMobil" ToRole="Actuacion" />
           <NavigationProperty Name="Actuacion1" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Musico" FromRole="UsuarioMobil" ToRole="Actuacion" />
           <NavigationProperty Name="Chats" Relationship="dam05Model.FK_Chats_UsuarioMobil_Local" FromRole="UsuarioMobil" ToRole="Chats" />
@@ -1033,7 +1035,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1135,6 +1137,7 @@
           <EntitySetMapping Name="UsuarioMobil">
             <EntityTypeMapping TypeName="dam05Model.UsuarioMobil">
               <MappingFragment StoreEntitySet="UsuarioMobil">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Ubicacion" ColumnName="Ubicacion" />
                 <ScalarProperty Name="ValoracionTotal" ColumnName="ValoracionTotal" />
                 <ScalarProperty Name="Usuario_ID" ColumnName="Usuario_ID" />
