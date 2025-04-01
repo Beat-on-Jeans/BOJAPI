@@ -42,9 +42,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Estado" Type="bit" />
           <Property Name="UsuarioMobil_Local_ID" Type="int" Nullable="false" />
           <Property Name="UsuarioMobil_Musico_ID" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="int" />
         </EntityType>
         <EntityType Name="Mensajes">
           <Key>
@@ -99,7 +99,7 @@
           <Property Name="Usuario_ID" Type="int" />
           <Property Name="ValoracionTotal" Type="float" />
           <Property Name="Ubicacion" Type="varchar" MaxLength="255" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="255" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Usuarios">
           <Key>
@@ -649,9 +649,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Estado" Type="Boolean" />
           <Property Name="UsuarioMobil_Local_ID" Type="Int32" Nullable="false" />
           <Property Name="UsuarioMobil_Musico_ID" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="Int32" />
           <NavigationProperty Name="UsuarioMobil" Relationship="dam05Model.FK_Matches_UsuarioMobil_Local" FromRole="Matches" ToRole="UsuarioMobil" />
           <NavigationProperty Name="UsuarioMobil1" Relationship="dam05Model.FK_Matches_UsuarioMobil_Musico" FromRole="Matches" ToRole="UsuarioMobil" />
         </EntityType>
@@ -719,7 +719,7 @@
           <Property Name="Usuario_ID" Type="Int32" />
           <Property Name="ValoracionTotal" Type="Double" />
           <Property Name="Ubicacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Actuacion" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Local" FromRole="UsuarioMobil" ToRole="Actuacion" />
           <NavigationProperty Name="Actuacion1" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Musico" FromRole="UsuarioMobil" ToRole="Actuacion" />
           <NavigationProperty Name="Chats" Relationship="dam05Model.FK_Chats_UsuarioMobil_Local" FromRole="UsuarioMobil" ToRole="Chats" />
@@ -1080,9 +1080,9 @@
           <EntitySetMapping Name="Matches">
             <EntityTypeMapping TypeName="dam05Model.Matches">
               <MappingFragment StoreEntitySet="Matches">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="UsuarioMobil_Musico_ID" ColumnName="UsuarioMobil_Musico_ID" />
                 <ScalarProperty Name="UsuarioMobil_Local_ID" ColumnName="UsuarioMobil_Local_ID" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
