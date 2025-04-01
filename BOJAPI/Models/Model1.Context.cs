@@ -34,6 +34,7 @@ namespace BOJAPI.Models
         public virtual DbSet<Notificaciones> Notificaciones { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Soporte> Soporte { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TipoIncidencia> TipoIncidencia { get; set; }
         public virtual DbSet<UsuarioMobil> UsuarioMobil { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }

@@ -42,9 +42,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Estado" Type="bit" />
           <Property Name="UsuarioMobil_Local_ID" Type="int" Nullable="false" />
           <Property Name="UsuarioMobil_Musico_ID" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="int" />
         </EntityType>
         <EntityType Name="Mensajes">
           <Key>
@@ -80,6 +80,16 @@
           <Property Name="Tipo_Incidencia_ID" Type="int" />
           <Property Name="Fecha_Creacion" Type="date" Nullable="false" />
           <Property Name="Fecha_Cierre" Type="date" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="TipoIncidencia">
           <Key>
@@ -402,6 +412,7 @@
           <EntitySet Name="Notificaciones" EntityType="Self.Notificaciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Soporte" EntityType="Self.Soporte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoIncidencia" EntityType="Self.TipoIncidencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsuarioMobil" EntityType="Self.UsuarioMobil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
@@ -510,6 +521,7 @@
           <EntitySet Name="Notificaciones" EntityType="dam05Model.Notificaciones" />
           <EntitySet Name="Roles" EntityType="dam05Model.Roles" />
           <EntitySet Name="Soporte" EntityType="dam05Model.Soporte" />
+          <EntitySet Name="sysdiagrams" EntityType="dam05Model.sysdiagrams" />
           <EntitySet Name="TipoIncidencia" EntityType="dam05Model.TipoIncidencia" />
           <EntitySet Name="UsuarioMobil" EntityType="dam05Model.UsuarioMobil" />
           <EntitySet Name="Usuarios" EntityType="dam05Model.Usuarios" />
@@ -649,9 +661,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Estado" Type="Boolean" />
           <Property Name="UsuarioMobil_Local_ID" Type="Int32" Nullable="false" />
           <Property Name="UsuarioMobil_Musico_ID" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="Int32" />
           <NavigationProperty Name="UsuarioMobil" Relationship="dam05Model.FK_Matches_UsuarioMobil_Local" FromRole="Matches" ToRole="UsuarioMobil" />
           <NavigationProperty Name="UsuarioMobil1" Relationship="dam05Model.FK_Matches_UsuarioMobil_Musico" FromRole="Matches" ToRole="UsuarioMobil" />
         </EntityType>
@@ -699,6 +711,16 @@
           <NavigationProperty Name="UsuariosCSharp" Relationship="dam05Model.FK_Soporte_TecnicoCSharp" FromRole="Soporte" ToRole="UsuariosCSharp" />
           <NavigationProperty Name="UsuarioMobil1" Relationship="dam05Model.FK_Soporte_Usuario" FromRole="Soporte" ToRole="UsuarioMobil" />
           <NavigationProperty Name="UsuariosCSharp1" Relationship="dam05Model.FK_Soporte_UsuarioCSharp" FromRole="Soporte" ToRole="UsuariosCSharp" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TipoIncidencia">
           <Key>
@@ -1080,9 +1102,9 @@
           <EntitySetMapping Name="Matches">
             <EntityTypeMapping TypeName="dam05Model.Matches">
               <MappingFragment StoreEntitySet="Matches">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="UsuarioMobil_Musico_ID" ColumnName="UsuarioMobil_Musico_ID" />
                 <ScalarProperty Name="UsuarioMobil_Local_ID" ColumnName="UsuarioMobil_Local_ID" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1123,6 +1145,17 @@
                 <ScalarProperty Name="Tecnico_ID" ColumnName="Tecnico_ID" />
                 <ScalarProperty Name="Usuario_ID" ColumnName="Usuario_ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="dam05Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
