@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -139,7 +140,7 @@ namespace BOJAPI.Controllers
             db.Usuarios.Add(usuario);
             await db.SaveChangesAsync(); // Guarda el usuario en la tabla Usuarios
 
-           Usuarios newUser = db.Usuarios.FirstOrDefault(c => c.Correo == usuarioRecibido.Correo);
+            Usuarios newUser = db.Usuarios.FirstOrDefault(c => c.Correo == usuarioRecibido.Correo);
 
             // Paso 3: Crear el objeto UsuarioMobil y asignarle el Notificacion_ID
             var usuarioMobil = new UsuarioMobil
@@ -187,7 +188,7 @@ namespace BOJAPI.Controllers
             // Paso 5: Devolver toda la información del usuario junto con los datos de UsuarioMobil
             var usuarioRecibidoCompleto = new UsuarioRecibido
             {
-                ID = usuario.ID,
+                ID = usuarioMobil.ID,
                 Nombre = usuario.Nombre,
                 Correo = usuario.Correo,
                 Contrasena = usuario.Contrasena,
@@ -197,6 +198,140 @@ namespace BOJAPI.Controllers
             };
 
             return Ok(usuarioRecibidoCompleto);
+        }
+
+
+
+
+        // GET: api/Usuarios/Matches_Locales/{Ubicacion}/{userID}
+        [HttpGet]
+        [Route("api/Usuarios/Matches_Locales/{Ubicacion}/{userID}")]
+        public async Task<IHttpActionResult> GetLocalMatchesUser(String ubicacion, int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var userMatch = await (from u in db.Usuarios
+                                       join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
+                                       join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id into generosJoin
+                                       from gu in generosJoin.DefaultIfEmpty()
+                                       join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID into generosMusicalesJoin
+                                       from gm in generosMusicalesJoin.DefaultIfEmpty()
+                                       where um.Ubicacion.ToLower().Contains(ubicacion.ToLower()) && u.ROL_ID == 2
+                                       group new { u, um, gm } by new
+                                       {
+                                           um.ID,
+                                           u.Nombre,
+                                           um.Descripcion,
+                                           um.Url_Imagen
+                                       } into usuarioGroup
+                                       select new
+                                       {
+                                           usuarioGroup.Key.ID,
+                                           usuarioGroup.Key.Nombre,
+                                           usuarioGroup.Key.Descripcion,
+                                           Generos = usuarioGroup.Where(g => g.gm != null).Select(g => g.gm.Nombre_Genero).Distinct().ToList(),
+                                           usuarioGroup.Key.Url_Imagen
+                                       }).ToListAsync();
+
+                if (userMatch == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+
+                    var localIDs = await (from u in db.Usuarios
+                                          join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
+                                          join m in db.Matches on um.ID equals m.UsuarioMobil_Musico_ID
+                                          where um.Usuario_ID == userID
+                                          select m.UsuarioMobil_Local_ID).ToListAsync();
+
+
+
+
+                    if (localIDs != null)
+                    {
+                        // Filtrar userMatch, eliminando los que tienen ID en matchedIds
+                        userMatch = userMatch.Where(um => !localIDs.Contains(um.ID)).ToList();
+
+                    }
+
+                    result = Ok(userMatch);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
+        }
+
+        // GET: api/Usuarios/Matches_Music/{Ubicacion}
+        [HttpGet]
+        [Route("api/Usuarios/Matches_Music/{Ubicacion}/{userID}")]
+        public async Task<IHttpActionResult> GetMusicMatchesUser(String ubicacion, int userID)
+        {
+            var location = Regex.Split(ubicacion, @"\s*,\s*");
+            string ciudad = location[location.Length - 1].ToLower();
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            try
+            {
+                var userMatch = await (from u in db.Usuarios
+                                       join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
+                                       join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id into generosJoin
+                                       from gu in generosJoin.DefaultIfEmpty()
+                                       join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID into generosMusicalesJoin
+                                       from gm in generosMusicalesJoin.DefaultIfEmpty()
+                                       where um.Ubicacion.ToLower().Contains(ciudad) && u.ROL_ID == 1
+                                       group new { u, um, gm } by new
+                                       {
+                                           um.ID,
+                                           u.Nombre,
+                                           um.Descripcion,
+                                           um.Url_Imagen
+                                       } into usuarioGroup
+                                       select new
+                                       {
+                                           usuarioGroup.Key.ID,
+                                           usuarioGroup.Key.Nombre,
+                                           usuarioGroup.Key.Descripcion,
+                                           Generos = usuarioGroup.Where(g => g.gm != null).Select(g => g.gm.Nombre_Genero).Distinct().ToList(),
+                                           usuarioGroup.Key.Url_Imagen
+                                       }).ToListAsync();
+
+
+                if (userMatch == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+                    var musicIDs = await (from u in db.Usuarios
+                                          join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
+                                          join m in db.Matches on um.ID equals m.UsuarioMobil_Local_ID
+                                          where um.Usuario_ID == userID
+                                          select m.UsuarioMobil_Musico_ID).ToListAsync();
+
+
+                    if (musicIDs != null)
+                    {
+                        // Filtrar userMatch, eliminando los que tienen ID en matchedIds
+                        userMatch = userMatch.Where(um => !musicIDs.Contains(um.ID)).ToList();
+
+                    }
+
+                    result = Ok(userMatch);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = InternalServerError(ex);
+            }
+            return result;
         }
 
 
@@ -319,3 +454,4 @@ namespace BOJAPI.Controllers
         }
     }
 }
+
