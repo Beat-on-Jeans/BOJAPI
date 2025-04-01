@@ -131,7 +131,7 @@ namespace BOJAPI.Controllers
 
                 Matches newMatch = new Matches
                 {
-                    Estado = false,
+                    Estado = 2,
                     UsuarioMobil_Local_ID = localId,
                     UsuarioMobil_Musico_ID = Musico_ID
                 };
@@ -143,7 +143,7 @@ namespace BOJAPI.Controllers
             {
                 Matches match = new Matches
                 {
-                    Estado = true,
+                    Estado = 3,
                     UsuarioMobil_Local_ID = localId,
                     UsuarioMobil_Musico_ID = Musico_ID
                 };
@@ -178,12 +178,12 @@ namespace BOJAPI.Controllers
 
             var isCurrent = await db.Matches.FirstOrDefaultAsync(m => m.UsuarioMobil_Local_ID == Local_ID &&
                                                                       m.UsuarioMobil_Musico_ID == musicId);
-            if (isCurrent == null)
+            if (isCurrent.Estado < 3)
             {
 
                 Matches newMatch = new Matches
                 {
-                    Estado = false,
+                    Estado = 2,
                     UsuarioMobil_Local_ID = Local_ID,
                     UsuarioMobil_Musico_ID = musicId
                 };
@@ -195,7 +195,7 @@ namespace BOJAPI.Controllers
             {
                 Matches match = new Matches
                 {
-                    Estado = true,
+                    Estado = 3,
                     UsuarioMobil_Local_ID = Local_ID,
                     UsuarioMobil_Musico_ID = musicId
                 };

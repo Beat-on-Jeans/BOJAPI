@@ -15,9 +15,9 @@ namespace BOJAPI.Models
     public partial class Matches
     {
         public int ID { get; set; }
-        public Nullable<bool> Estado { get; set; }
         public int UsuarioMobil_Local_ID { get; set; }
         public int UsuarioMobil_Musico_ID { get; set; }
+        public Nullable<int> Estado { get; set; }
     
         public virtual UsuarioMobil UsuarioMobil { get; set; }
         public virtual UsuarioMobil UsuarioMobil1 { get; set; }
