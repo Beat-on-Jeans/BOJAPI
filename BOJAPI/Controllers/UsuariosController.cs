@@ -198,7 +198,80 @@ namespace BOJAPI.Controllers
 
             return Ok(usuarioRecibidoCompleto);
         }
-    
+
+
+        // GET: api/Usuarios/Musicos
+        [ResponseType(typeof(IEnumerable<UsuarioRecibido>))]
+        [HttpGet]
+        [Route("api/Usuarios/Musicos")]
+        public async Task<IHttpActionResult> GetAllMusicos()
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+
+            // Buscar los músicos en base al rol
+            var musicos = await (from usuario in db.Usuarios
+                                 join usuarioMobil in db.UsuarioMobil
+                                 on usuario.ID equals usuarioMobil.Usuario_ID // Join usando Usuario_ID de UsuarioMobil
+                                 where usuario.ROL_ID == 1 // Filtramos por rolId = 1 (músicos)
+                                 select new UsuarioRecibido
+                                 {
+                                     ID = usuario.ID,
+                                     Nombre = usuario.Nombre, // Nombre de Usuario (de la tabla Usuarios)
+                                     Correo = null, // Correo a null
+                                     Contrasena = null, // Contraseña a null
+                                     ROL_ID = (int)usuario.ROL_ID,
+                                     Url_Imagen = usuarioMobil.Url_Imagen, // La URL de imagen de UsuarioMobil
+                                     Ubicacion = usuarioMobil.Ubicacion // La ubicación de UsuarioMobil
+                                 }).ToListAsync();
+
+            if (musicos == null || musicos.Count == 0)
+            {
+                result = NotFound();
+            }
+            else
+            {
+                result = Ok(musicos);
+            }
+            return result;
+        }
+
+        // GET: api/Usuarios/Locales
+        [ResponseType(typeof(IEnumerable<UsuarioRecibido>))]
+        [HttpGet]
+        [Route("api/Usuarios/Locales")]
+        public async Task<IHttpActionResult> GetAllLocales()
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+
+            // Buscar los locales en base al rol
+            var locales = await (from usuario in db.Usuarios
+                                 join usuarioMobil in db.UsuarioMobil
+                                 on usuario.ID equals usuarioMobil.Usuario_ID // Join usando Usuario_ID de UsuarioMobil
+                                 where usuario.ROL_ID == 2 // Filtramos por rolId = 2 (locales)
+                                 select new UsuarioRecibido
+                                 {
+                                     ID = usuario.ID,
+                                     Nombre = usuario.Nombre, // Nombre de Usuario (de la tabla Usuarios)
+                                     Correo = null, // Correo a null
+                                     Contrasena = null, // Contraseña a null
+                                     ROL_ID = (int)usuario.ROL_ID,
+                                     Url_Imagen = usuarioMobil.Url_Imagen, // La URL de imagen de UsuarioMobil
+                                     Ubicacion = usuarioMobil.Ubicacion // La ubicación de UsuarioMobil
+                                 }).ToListAsync();
+
+            if (locales == null || locales.Count == 0)
+            {
+                result = NotFound();
+            }
+            else
+            {
+                result = Ok(locales);
+            }
+            return result;
+        }
+
 
         // DELETE: api/Usuarios/5
         [ResponseType(typeof(Usuarios))]

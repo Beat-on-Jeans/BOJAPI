@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using BOJAPI.Clases;
 using BOJAPI.Models;
 
 namespace BOJAPI.Controllers
