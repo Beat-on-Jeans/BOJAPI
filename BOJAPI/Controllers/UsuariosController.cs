@@ -218,7 +218,11 @@ namespace BOJAPI.Controllers
                                        from gu in generosJoin.DefaultIfEmpty()
                                        join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID into generosMusicalesJoin
                                        from gm in generosMusicalesJoin.DefaultIfEmpty()
-                                       where um.Ubicacion.ToLower().Contains(ubicacion.ToLower()) && u.ROL_ID == 2
+                                       join m in db.Matches on um.ID equals m.UsuarioMobil_Local_ID into matchesJoin
+                                       from m in matchesJoin.DefaultIfEmpty()
+                                       where um.Ubicacion.ToLower().Contains(ubicacion.ToLower()) 
+                                               && u.ROL_ID == 2
+                                               && (m == null || m.Estado < 3)
                                        group new { u, um, gm } by new
                                        {
                                            um.ID,
@@ -286,7 +290,11 @@ namespace BOJAPI.Controllers
                                        from gu in generosJoin.DefaultIfEmpty()
                                        join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID into generosMusicalesJoin
                                        from gm in generosMusicalesJoin.DefaultIfEmpty()
-                                       where um.Ubicacion.ToLower().Contains(ciudad) && u.ROL_ID == 1
+                                       join m in db.Matches on um.ID equals m.UsuarioMobil_Musico_ID into matchesJoin
+                                       from m in matchesJoin.DefaultIfEmpty()
+                                       where um.Ubicacion.ToLower().Contains(ciudad) 
+                                             && u.ROL_ID == 1
+                                             && (m == null || m.Estado < 3)
                                        group new { u, um, gm } by new
                                        {
                                            um.ID,
@@ -303,29 +311,11 @@ namespace BOJAPI.Controllers
                                            usuarioGroup.Key.Url_Imagen
                                        }).ToListAsync();
 
-
                 if (userMatch == null)
                 {
                     result = NotFound();
                 }
-                else
-                {
-                    var musicIDs = await (from u in db.Usuarios
-                                          join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
-                                          join m in db.Matches on um.ID equals m.UsuarioMobil_Local_ID
-                                          where um.Usuario_ID == userID
-                                          select m.UsuarioMobil_Musico_ID).ToListAsync();
-
-
-                    if (musicIDs != null)
-                    {
-                        // Filtrar userMatch, eliminando los que tienen ID en matchedIds
-                        userMatch = userMatch.Where(um => !musicIDs.Contains(um.ID)).ToList();
-
-                    }
-
-                    result = Ok(userMatch);
-                }
+                result = Ok(userMatch);
             }
             catch (Exception ex)
             {
