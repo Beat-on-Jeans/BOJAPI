@@ -339,12 +339,12 @@ namespace BOJAPI.Controllers
                                  join usuarioMobil in db.UsuarioMobil
                                  on usuario.ID equals usuarioMobil.Usuario_ID // Join usando Usuario_ID de UsuarioMobil
                                  where usuario.ROL_ID == 1 // Filtramos por rolId = 1 (músicos)
-                                 select new UsuarioRecibido
+                                 select new UsuarioMobilAEnviar
                                  {
                                      ID = usuario.ID,
                                      Nombre = usuario.Nombre, // Nombre de Usuario (de la tabla Usuarios)
-                                     Correo = null, // Correo a null
-                                     Contrasena = null, // Contraseña a null
+                                     Descripcion = usuarioMobil.Descripcion, // Correo a null
+                                     ValoracionTotal = (double)usuarioMobil.ValoracionTotal, // Contraseña a null
                                      ROL_ID = (int)usuario.ROL_ID,
                                      Url_Imagen = usuarioMobil.Url_Imagen, // La URL de imagen de UsuarioMobil
                                      Ubicacion = usuarioMobil.Ubicacion // La ubicación de UsuarioMobil
@@ -375,12 +375,12 @@ namespace BOJAPI.Controllers
                                  join usuarioMobil in db.UsuarioMobil
                                  on usuario.ID equals usuarioMobil.Usuario_ID // Join usando Usuario_ID de UsuarioMobil
                                  where usuario.ROL_ID == 2 // Filtramos por rolId = 2 (locales)
-                                 select new UsuarioRecibido
+                                 select new UsuarioMobilAEnviar
                                  {
                                      ID = usuario.ID,
                                      Nombre = usuario.Nombre, // Nombre de Usuario (de la tabla Usuarios)
-                                     Correo = null, // Correo a null
-                                     Contrasena = null, // Contraseña a null
+                                     Descripcion = usuarioMobil.Descripcion, // Correo a null
+                                     ValoracionTotal = (double)usuarioMobil.ValoracionTotal, // Contraseña a null
                                      ROL_ID = (int)usuario.ROL_ID,
                                      Url_Imagen = usuarioMobil.Url_Imagen, // La URL de imagen de UsuarioMobil
                                      Ubicacion = usuarioMobil.Ubicacion // La ubicación de UsuarioMobil

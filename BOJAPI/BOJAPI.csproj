@@ -169,6 +169,7 @@
     <Compile Include="Clases\GeneroUsuario.cs" />
     <Compile Include="Clases\Mensajes.cs" />
     <Compile Include="Clases\UsuarioMatches.cs" />
+    <Compile Include="Clases\UsuarioMobilAEnviar.cs" />
     <Compile Include="Clases\UsuarioRecibido.cs" />
     <Compile Include="Clases\Utilities.cs" />
     <Compile Include="Controllers\ActuacionsController.cs" />
@@ -231,9 +232,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Soporte.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TipoIncidencia.cs">
