@@ -7,9 +7,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using BOJAPI.Clases;
 using BOJAPI.Models;
 
 namespace BOJAPI.Controllers
@@ -105,6 +107,111 @@ namespace BOJAPI.Controllers
                 }
             }
 
+            return result;
+        }
+
+
+     
+        [HttpPost]
+        [Route("api/Matches_Local/{Local_ID}/{Musico_ID}")]
+        public async Task<IHttpActionResult> CreateNewMatchLocal(int Local_ID, int Musico_ID)
+        {
+            IHttpActionResult result;
+
+            var localId = await db.UsuarioMobil
+                         .Where(u => u.Usuario_ID == Local_ID)
+                         .Select(u => u.ID)
+                         .FirstOrDefaultAsync();
+
+
+            var isCurrent = await db.Matches.FirstOrDefaultAsync(m => m.UsuarioMobil_Local_ID == localId && 
+                                                                      m.UsuarioMobil_Musico_ID == Musico_ID);
+            if (isCurrent == null)
+            {
+
+                Matches newMatch = new Matches
+                {
+                    Estado = false,
+                    UsuarioMobil_Local_ID = localId,
+                    UsuarioMobil_Musico_ID = Musico_ID
+                };
+                db.Matches.Add(newMatch);
+                await db.SaveChangesAsync();
+                result = Ok(newMatch);
+            }
+            else
+            {
+                Matches match = new Matches
+                {
+                    Estado = true,
+                    UsuarioMobil_Local_ID = localId,
+                    UsuarioMobil_Musico_ID = Musico_ID
+                };
+                db.Entry(match).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+
+                Chats newChat = new Chats
+                {
+                    UsuarioMobil_Local_ID = localId,
+                    UsuarioMobil_Musico_ID = Musico_ID
+                };
+                db.Chats.Add(newChat);
+                await db.SaveChangesAsync();
+
+                result = Ok(match);
+            }
+            return result;
+        }
+
+
+        [HttpPost]
+        [Route("api/Matches_Music/{Local_ID}/{Musico_ID}")]
+        public async Task<IHttpActionResult> CreateNewMatchMusic(int Local_ID, int Musico_ID)
+        {
+            IHttpActionResult result;
+
+            var musicId = await db.UsuarioMobil
+                         .Where(u => u.Usuario_ID == Musico_ID)
+                         .Select(u => u.ID)
+                         .FirstOrDefaultAsync();
+
+
+            var isCurrent = await db.Matches.FirstOrDefaultAsync(m => m.UsuarioMobil_Local_ID == Local_ID &&
+                                                                      m.UsuarioMobil_Musico_ID == musicId);
+            if (isCurrent == null)
+            {
+
+                Matches newMatch = new Matches
+                {
+                    Estado = false,
+                    UsuarioMobil_Local_ID = Local_ID,
+                    UsuarioMobil_Musico_ID = musicId
+                };
+                db.Matches.Add(newMatch);
+                await db.SaveChangesAsync();
+                result = Ok(newMatch);
+            }
+            else
+            {
+                Matches match = new Matches
+                {
+                    Estado = true,
+                    UsuarioMobil_Local_ID = Local_ID,
+                    UsuarioMobil_Musico_ID = musicId
+                };
+                db.Entry(match).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+
+                Chats newChat = new Chats
+                {
+                    UsuarioMobil_Local_ID = Local_ID,
+                    UsuarioMobil_Musico_ID = musicId
+                };
+                db.Chats.Add(newChat);
+                await db.SaveChangesAsync();
+
+                result = Ok(match);
+            }
             return result;
         }
 
