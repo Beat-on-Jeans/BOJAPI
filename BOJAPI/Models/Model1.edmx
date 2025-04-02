@@ -42,8 +42,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UsuarioMobil_Local_ID" Type="int" Nullable="false" />
-          <Property Name="UsuarioMobil_Musico_ID" Type="int" Nullable="false" />
+          <Property Name="Creador_ID" Type="int" Nullable="false" />
+          <Property Name="Finalizador_ID" Type="int" Nullable="false" />
           <Property Name="Estado" Type="int" />
         </EntityType>
         <EntityType Name="Mensajes">
@@ -196,7 +196,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Matches">
-              <PropertyRef Name="UsuarioMobil_Local_ID" />
+              <PropertyRef Name="Creador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -208,7 +208,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Matches">
-              <PropertyRef Name="UsuarioMobil_Musico_ID" />
+              <PropertyRef Name="Finalizador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -649,8 +649,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UsuarioMobil_Local_ID" Type="Int32" Nullable="false" />
-          <Property Name="UsuarioMobil_Musico_ID" Type="Int32" Nullable="false" />
+          <Property Name="Creador_ID" Type="Int32" Nullable="false" />
+          <Property Name="Finalizador_ID" Type="Int32" Nullable="false" />
           <Property Name="Estado" Type="Int32" />
           <NavigationProperty Name="UsuarioMobil" Relationship="dam05Model.FK_Matches_UsuarioMobil_Local" FromRole="Matches" ToRole="UsuarioMobil" />
           <NavigationProperty Name="UsuarioMobil1" Relationship="dam05Model.FK_Matches_UsuarioMobil_Musico" FromRole="Matches" ToRole="UsuarioMobil" />
@@ -863,7 +863,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Matches">
-              <PropertyRef Name="UsuarioMobil_Local_ID" />
+              <PropertyRef Name="Creador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -875,7 +875,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Matches">
-              <PropertyRef Name="UsuarioMobil_Musico_ID" />
+              <PropertyRef Name="Finalizador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1081,8 +1081,8 @@
             <EntityTypeMapping TypeName="dam05Model.Matches">
               <MappingFragment StoreEntitySet="Matches">
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="UsuarioMobil_Musico_ID" ColumnName="UsuarioMobil_Musico_ID" />
-                <ScalarProperty Name="UsuarioMobil_Local_ID" ColumnName="UsuarioMobil_Local_ID" />
+                <ScalarProperty Name="Finalizador_ID" ColumnName="Finalizador_ID" />
+                <ScalarProperty Name="Creador_ID" ColumnName="Creador_ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

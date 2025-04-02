@@ -5,16 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="705dcd59982c469caa5ffcec29a336f7" Name="Diagram1" ZoomLevel="62">
-        <EntityTypeShape EntityType="dam05Model.Actuacion" Width="1.5" PointX="7.5" PointY="28.25" />
-        <EntityTypeShape EntityType="dam05Model.Chats" Width="1.5" PointX="7.5" PointY="22.375" />
+        <EntityTypeShape EntityType="dam05Model.Actuacion" Width="1.5" PointX="7.5" PointY="22.375" />
+        <EntityTypeShape EntityType="dam05Model.Chats" Width="1.5" PointX="7.5" PointY="28.25" />
         <EntityTypeShape EntityType="dam05Model.Generos_Musicales" Width="1.5" PointX="8.25" PointY="9.5" />
-        <EntityTypeShape EntityType="dam05Model.Generos_Usuarios" Width="1.5" PointX="10.5" PointY="17.25" />
+        <EntityTypeShape EntityType="dam05Model.Generos_Usuarios" Width="1.5" PointX="10.5" PointY="13.25" />
         <EntityTypeShape EntityType="dam05Model.Matches" Width="1.5" PointX="7.5" PointY="25.25" />
-        <EntityTypeShape EntityType="dam05Model.Mensajes" Width="1.5" PointX="9.75" PointY="22.375" />
+        <EntityTypeShape EntityType="dam05Model.Mensajes" Width="1.5" PointX="9.75" PointY="28.25" />
         <EntityTypeShape EntityType="dam05Model.Notificaciones" Width="1.5" PointX="3" PointY="17.5" />
         <EntityTypeShape EntityType="dam05Model.Roles" Width="1.5" PointX="0.75" PointY="11.25" />
-        <EntityTypeShape EntityType="dam05Model.Soporte" Width="1.5" PointX="13.5" PointY="16.75" />
-        <EntityTypeShape EntityType="dam05Model.TipoIncidencia" Width="1.5" PointX="11.25" PointY="14.5" />
+        <EntityTypeShape EntityType="dam05Model.Soporte" Width="1.5" PointX="10.5" PointY="16.75" />
+        <EntityTypeShape EntityType="dam05Model.TipoIncidencia" Width="1.5" PointX="8.25" PointY="6.5" />
         <EntityTypeShape EntityType="dam05Model.UsuarioMobil" Width="1.5" PointX="5.25" PointY="15.625" />
         <EntityTypeShape EntityType="dam05Model.Usuarios" Width="1.5" PointX="3" PointY="22.75" />
         <EntityTypeShape EntityType="dam05Model.UsuariosCSharp" Width="1.5" PointX="8.25" PointY="17.125" />

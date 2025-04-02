@@ -118,16 +118,16 @@ namespace BOJAPI.Controllers
         {
             IHttpActionResult result;
 
-            var isCurrent = await db.Matches.FirstOrDefaultAsync(m => m.UsuarioMobil_Local_ID == Local_ID && 
-                                                                      m.UsuarioMobil_Musico_ID == Musico_ID);
+            var isCurrent = await db.Matches.FirstOrDefaultAsync(m => m.Creador_ID == Local_ID && 
+                                                                      m.Finalizador_ID == Musico_ID);
             if (isCurrent == null)
             {
 
                 Matches newMatch = new Matches
                 {
                     Estado = 2,
-                    UsuarioMobil_Local_ID = Local_ID,
-                    UsuarioMobil_Musico_ID = Musico_ID
+                    Creador_ID = Local_ID,
+                    Finalizador_ID = Musico_ID
                 };
                 db.Matches.Add(newMatch);
                 await db.SaveChangesAsync();
@@ -135,13 +135,7 @@ namespace BOJAPI.Controllers
             }
             else
             {
-                Matches match = new Matches
-                {
-                    Estado = 3,
-                    UsuarioMobil_Local_ID = Local_ID,
-                    UsuarioMobil_Musico_ID = Musico_ID
-                };
-                db.Entry(match).State = EntityState.Modified;
+                isCurrent.Estado = 3;
                 await db.SaveChangesAsync();
 
                 Chats newChat = new Chats
@@ -152,7 +146,7 @@ namespace BOJAPI.Controllers
                 db.Chats.Add(newChat);
                 await db.SaveChangesAsync();
 
-                result = Ok(match);
+                result = Ok(isCurrent);
             }
             return result;
         }
