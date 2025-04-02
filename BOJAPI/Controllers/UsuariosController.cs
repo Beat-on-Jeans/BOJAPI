@@ -55,7 +55,8 @@ namespace BOJAPI.Controllers
             db.Configuration.LazyLoadingEnabled = false;
             try
             {
-                var user = await db.Usuarios.FirstOrDefaultAsync(c => c.ID == userID);
+                var userMobil = await db.UsuarioMobil.FirstOrDefaultAsync(c => c.ID == userID);
+                var user = await db.Usuarios.FirstOrDefaultAsync(c => c.ID == userMobil.Usuario_ID);
 
                 if (user == null)
                 {
@@ -201,9 +202,6 @@ namespace BOJAPI.Controllers
         }
 
 
-
-
-        // GET: api/Usuarios/Matches_Locales/{Ubicacion}/{userID}
         [HttpGet]
         [Route("api/Usuarios/Matches_Locales/{Ubicacion}/{userID}")]
         public async Task<IHttpActionResult> GetLocalMatchesUser(String ubicacion, int userID)
@@ -218,11 +216,10 @@ namespace BOJAPI.Controllers
                                        from gu in generosJoin.DefaultIfEmpty()
                                        join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID into generosMusicalesJoin
                                        from gm in generosMusicalesJoin.DefaultIfEmpty()
-                                       join m in db.Matches on um.ID equals m.UsuarioMobil_Local_ID into matchesJoin
-                                       from m in matchesJoin.DefaultIfEmpty()
-                                       where um.Ubicacion.ToLower().Contains(ubicacion.ToLower()) 
-                                               && u.ROL_ID == 2
-                                               && (m == null || m.Estado < 3)
+                                       join m in db.Matches on um.ID equals m.Finalizador_ID
+                                       where um.Ubicacion.ToLower().Contains(ubicacion.ToLower())
+                                                 && u.ROL_ID == 2
+                                                 && (m == null || m.Estado < 3 || m.Creador_ID != userID)
                                        group new { u, um, gm } by new
                                        {
                                            um.ID,
@@ -235,35 +232,20 @@ namespace BOJAPI.Controllers
                                            usuarioGroup.Key.ID,
                                            usuarioGroup.Key.Nombre,
                                            usuarioGroup.Key.Descripcion,
-                                           Generos = usuarioGroup.Where(g => g.gm != null).Select(g => g.gm.Nombre_Genero).Distinct().ToList(),
+                                           Generos = usuarioGroup.Where(g => g.gm != null)
+                                                                 .Select(g => g.gm.Nombre_Genero)
+                                                                 .Distinct()
+                                                                 .ToList(),
                                            usuarioGroup.Key.Url_Imagen
                                        }).ToListAsync();
+
 
                 if (userMatch == null)
                 {
                     result = NotFound();
                 }
-                else
-                {
 
-                    var localIDs = await (from u in db.Usuarios
-                                          join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
-                                          join m in db.Matches on um.ID equals m.UsuarioMobil_Musico_ID
-                                          where um.Usuario_ID == userID
-                                          select m.UsuarioMobil_Local_ID).ToListAsync();
-
-
-
-
-                    if (localIDs != null)
-                    {
-                        // Filtrar userMatch, eliminando los que tienen ID en matchedIds
-                        userMatch = userMatch.Where(um => !localIDs.Contains(um.ID)).ToList();
-
-                    }
-
-                    result = Ok(userMatch);
-                }
+                result = Ok(userMatch);
 
             }
             catch (Exception ex)
@@ -273,7 +255,7 @@ namespace BOJAPI.Controllers
             return result;
         }
 
-        // GET: api/Usuarios/Matches_Music/{Ubicacion}
+
         [HttpGet]
         [Route("api/Usuarios/Matches_Music/{Ubicacion}/{userID}")]
         public async Task<IHttpActionResult> GetMusicMatchesUser(String ubicacion, int userID)
@@ -284,32 +266,18 @@ namespace BOJAPI.Controllers
             db.Configuration.LazyLoadingEnabled = false;
             try
             {
+
                 var userMatch = await (from u in db.Usuarios
-                                       join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
-                                       join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id into generosJoin
-                                       from gu in generosJoin.DefaultIfEmpty()
-                                       join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID into generosMusicalesJoin
-                                       from gm in generosMusicalesJoin.DefaultIfEmpty()
-                                       join m in db.Matches on um.ID equals m.UsuarioMobil_Musico_ID into matchesJoin
-                                       from m in matchesJoin.DefaultIfEmpty()
-                                       where um.Ubicacion.ToLower().Contains(ciudad) 
-                                             && u.ROL_ID == 1
-                                             && (m == null || m.Estado < 3)
-                                       group new { u, um, gm } by new
-                                       {
-                                           um.ID,
-                                           u.Nombre,
-                                           um.Descripcion,
-                                           um.Url_Imagen
-                                       } into usuarioGroup
-                                       select new
-                                       {
-                                           usuarioGroup.Key.ID,
-                                           usuarioGroup.Key.Nombre,
-                                           usuarioGroup.Key.Descripcion,
-                                           Generos = usuarioGroup.Where(g => g.gm != null).Select(g => g.gm.Nombre_Genero).Distinct().ToList(),
-                                           usuarioGroup.Key.Url_Imagen
-                                       }).ToListAsync();
+                                               join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
+                                               join m in db.Matches on um.ID equals m.Finalizador_ID
+                                               where m.Creador_ID != userID || m.Estado < 3
+                                               select new
+                                               {
+                                                   um.ID,
+                                                   u.Nombre,
+                                                   um.Descripcion,
+                                                   um.Url_Imagen
+                                               }).Distinct().ToListAsync();
 
                 if (userMatch == null)
                 {
