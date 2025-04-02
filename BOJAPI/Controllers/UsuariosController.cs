@@ -210,42 +210,57 @@ namespace BOJAPI.Controllers
             db.Configuration.LazyLoadingEnabled = false;
             try
             {
+                // Obtener los usuarios que cumplen la condición
                 var userMatch = await (from u in db.Usuarios
                                        join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
-                                       join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id into generosJoin
-                                       from gu in generosJoin.DefaultIfEmpty()
-                                       join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID into generosMusicalesJoin
-                                       from gm in generosMusicalesJoin.DefaultIfEmpty()
-                                       join m in db.Matches on um.ID equals m.Finalizador_ID
-                                       where um.Ubicacion.ToLower().Contains(ubicacion.ToLower())
-                                                 && u.ROL_ID == 2
-                                                 && (m == null || m.Estado < 3 || m.Creador_ID != userID)
-                                       group new { u, um, gm } by new
+                                       join m in db.Matches on um.ID equals m.Finalizador_ID into matchesGroup
+                                       from m in matchesGroup.DefaultIfEmpty() // LEFT JOIN
+                                       where (m.Creador_ID == null || (m.Creador_ID != 1 && m.Estado < 3))
+                                             && um.ROL_ID != 1
+                                        select new
                                        {
                                            um.ID,
                                            u.Nombre,
                                            um.Descripcion,
                                            um.Url_Imagen
-                                       } into usuarioGroup
-                                       select new
-                                       {
-                                           usuarioGroup.Key.ID,
-                                           usuarioGroup.Key.Nombre,
-                                           usuarioGroup.Key.Descripcion,
-                                           Generos = usuarioGroup.Where(g => g.gm != null)
-                                                                 .Select(g => g.gm.Nombre_Genero)
-                                                                 .Distinct()
-                                                                 .ToList(),
-                                           usuarioGroup.Key.Url_Imagen
-                                       }).ToListAsync();
+                                       }).Distinct().ToListAsync();
+
+                // Extraer solo los IDs de los usuarios obtenidos
+                var userIds = userMatch.Select(u => u.ID).ToList();
+
+                // Obtener los géneros de los usuarios seleccionados
+                var userGenres = await (from um in db.UsuarioMobil
+                                        join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id
+                                        join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID
+                                        where userIds.Contains(um.ID) // Se usa la lista de IDs aquí
+                                        select new
+                                        {
+                                            UsuarioID = um.ID,
+                                            Genero = gm.Nombre_Genero
+                                        }).ToListAsync();
+
+                // Agrupar géneros por usuario
+                var groupedUserGenres = userGenres
+                    .GroupBy(g => g.UsuarioID)
+                    .ToDictionary(g => g.Key, g => g.Select(x => x.Genero).Distinct().ToList());
+
+                // Combinar los usuarios con sus géneros
+                var finalResult = userMatch.Select(user => new
+                {
+                    user.ID,
+                    user.Nombre,
+                    user.Descripcion,
+                    user.Url_Imagen,
+                    Generos = groupedUserGenres.ContainsKey(user.ID) ? groupedUserGenres[user.ID] : new List<string>()
+                }).ToList();
 
 
-                if (userMatch == null)
+                if (finalResult == null)
                 {
                     result = NotFound();
                 }
 
-                result = Ok(userMatch);
+                result = Ok(finalResult);
 
             }
             catch (Exception ex)
@@ -264,33 +279,71 @@ namespace BOJAPI.Controllers
             string ciudad = location[location.Length - 1].ToLower();
             IHttpActionResult result;
             db.Configuration.LazyLoadingEnabled = false;
+
             try
             {
-
+                // Obtener los usuarios que cumplen la condición
                 var userMatch = await (from u in db.Usuarios
-                                               join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
-                                               join m in db.Matches on um.ID equals m.Finalizador_ID
-                                               where m.Creador_ID != userID || m.Estado < 3
-                                               select new
-                                               {
-                                                   um.ID,
-                                                   u.Nombre,
-                                                   um.Descripcion,
-                                                   um.Url_Imagen
-                                               }).Distinct().ToListAsync();
+                                       join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
+                                       join m in db.Matches on um.ID equals m.Finalizador_ID into matchesGroup
+                                       from m in matchesGroup.DefaultIfEmpty() // LEFT JOIN
+                                       where (m.Creador_ID == null || (m.Creador_ID != 1 && m.Estado < 3))
+                                             && um.ROL_ID != 2
+                                       select new
+                                       {
+                                           um.ID,
+                                           u.Nombre,
+                                           um.Descripcion,
+                                           um.Url_Imagen
+                                       }).Distinct().ToListAsync();
 
-                if (userMatch == null)
+                // Extraer solo los IDs de los usuarios obtenidos
+                var userIds = userMatch.Select(u => u.ID).ToList(); 
+
+                // Obtener los géneros de los usuarios seleccionados
+                var userGenres = await (from um in db.UsuarioMobil
+                                        join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id
+                                        join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID
+                                        where userIds.Contains(um.ID) // Se usa la lista de IDs aquí
+                                        select new
+                                        {
+                                            UsuarioID = um.ID,
+                                            Genero = gm.Nombre_Genero
+                                        }).ToListAsync();
+
+                // Agrupar géneros por usuario
+                var groupedUserGenres = userGenres
+                    .GroupBy(g => g.UsuarioID)
+                    .ToDictionary(g => g.Key, g => g.Select(x => x.Genero).Distinct().ToList());
+
+                // Combinar los usuarios con sus géneros
+                var finalResult = userMatch.Select(user => new
                 {
-                    result = NotFound();
+                    user.ID,
+                    user.Nombre,
+                    user.Descripcion,
+                    user.Url_Imagen,
+                    Generos = groupedUserGenres.ContainsKey(user.ID) ? groupedUserGenres[user.ID] : new List<string>()
+                }).ToList();
+
+                if (finalResult == null)
+                {
+                    result = BadRequest();
                 }
-                result = Ok(userMatch);
+                else
+                {
+                    result = Ok(finalResult);
+                }
+        
             }
             catch (Exception ex)
             {
                 result = InternalServerError(ex);
             }
+
             return result;
         }
+
 
 
         // GET: api/Usuarios/Musicos
