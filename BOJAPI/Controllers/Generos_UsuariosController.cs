@@ -12,6 +12,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using BOJAPI.Models;
 using BOJAPI.Clases;
+using Microsoft.Ajax.Utilities;
 
 namespace BOJAPI.Controllers
 {
@@ -45,6 +46,131 @@ namespace BOJAPI.Controllers
             }
             return result;
         }
+
+
+        [HttpPut]
+        [Route("api/GenerosUsuarios/ActualizarGeneros/{usuarioId}")]
+
+        public async Task<IHttpActionResult> ActualizarGenerosUsuario(int usuarioId, [FromBody] List<int> generosIds)
+        {
+            // Validación básica
+            if (generosIds == null)
+            {
+                return BadRequest("La lista de géneros no puede ser nula");
+            }
+
+            try
+            {
+                // Verificar si el usuario existe
+                var usuarioExiste = await db.Usuarios.AnyAsync(u => u.ID == usuarioId);
+                if (!usuarioExiste)
+                {
+                    return NotFound();
+                }
+
+                // Obtener géneros actuales del usuario
+                var generosActuales = await db.Generos_Usuarios
+                    .Where(gu => gu.Usuario_Id == usuarioId)
+                    .ToListAsync();
+
+                // Convertir a lista de IDs para comparación
+                var generosActualesIds = generosActuales.Select(gu => gu.Genero_Id).ToList();
+
+                // Identificar cambios necesarios
+                var generosAEliminar = generosActuales
+                    .Where(gu => gu.Genero_Id.HasValue && !generosIds.Contains(gu.Genero_Id.Value))  // Corregido Genero_id a Genero_Id
+                    .ToList();
+
+                var generosAAñadir = generosIds
+                    .Where(id => !generosActualesIds.Contains(id))  // Corregido Contair a Contains
+                    .ToList();
+
+                // Validar que los géneros a añadir existan
+                var generosExistentes = await db.Generos_Musicales
+                    .Where(g => generosAAñadir.Contains(g.ID))
+                    .Select(g => g.ID)
+                    .ToListAsync();
+
+                var generosNoExistentes = generosAAñadir.Except(generosExistentes).ToList();
+                if (generosNoExistentes.Any())
+                {
+                    return BadRequest($"Los siguientes IDs de género no existen: {string.Join(", ", generosNoExistentes)}");
+                }
+
+                // Ejecutar transacción
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Eliminar relaciones que ya no aplican
+                        db.Generos_Usuarios.RemoveRange(generosAEliminar);
+
+                        // Crear nuevas relaciones
+                        foreach (var generoId in generosAAñadir)
+                        {
+                            db.Generos_Usuarios.Add(new Generos_Usuarios
+                            {
+                                Usuario_Id = usuarioId,
+                                Genero_Id = generoId,
+                            });
+                        }
+
+                        await db.SaveChangesAsync();
+                        transaction.Commit();
+
+                        return Ok(new
+                        {
+                            Success = true,
+                            Message = "Géneros actualizados correctamente"
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        return InternalServerError(new Exception("Error al actualizar géneros", ex));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/GenerosUsuarios/ObtenerGeneros/{usuarioId}")]
+        public async Task<IHttpActionResult> ObtenerGenerosUsuario(int usuarioId)
+        {
+            try
+            {
+                // Verificar si el usuario existe
+                var usuario = await db.Usuarios.FindAsync(usuarioId);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                // Obtener géneros musicales asociados al usuario
+                var generos = await db.Generos_Usuarios
+                    .Where(gu => gu.Usuario_Id == usuarioId)
+                    .Join(db.Generos_Musicales,
+                        gu => gu.Genero_Id,
+                        g => g.ID,
+                        (gu, g) => new
+                        {
+                            g.ID,
+                            g.Nombre_Genero
+                        })
+                    .ToListAsync();
+
+                return Ok(generos);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
 
 
         [HttpGet]
