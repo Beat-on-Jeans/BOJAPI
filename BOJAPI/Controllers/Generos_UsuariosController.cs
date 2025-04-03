@@ -53,12 +53,6 @@ namespace BOJAPI.Controllers
 
         public async Task<IHttpActionResult> ActualizarGenerosUsuario(int usuarioId, [FromBody] List<int> generosIds)
         {
-            // Validación básica
-            if (generosIds == null)
-            {
-                return BadRequest("La lista de géneros no puede ser nula");
-            }
-
             try
             {
                 // Verificar si el usuario existe

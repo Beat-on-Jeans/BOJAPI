@@ -46,6 +46,33 @@ namespace BOJAPI.Controllers
             return result;
         }
 
+        // GET: api/UsuarioMobils/5/Descripcion
+        [HttpGet]
+        [Route("api/UsuarioMobils/{id}/Descripcion")]
+        [ResponseType(typeof(string))]
+        public async Task<IHttpActionResult> GetDescripcionUsuario(int id)
+        {
+            try
+            {
+                // Buscar el usuario por ID
+                var usuario = await db.UsuarioMobil
+                    .Where(u => u.ID == id)
+                    .Select(u => new { u.Descripcion })
+                    .FirstOrDefaultAsync();
+
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(usuario.Descripcion);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         // PUT: api/UsuarioMobils/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutUsuarioMobil(int id, UsuarioMobil _usuarioMobil)
@@ -121,6 +148,36 @@ namespace BOJAPI.Controllers
             }
 
             return result;
+        }
+
+        // PUT: api/UsuarioMobils/5/Descripcion
+        [HttpPut]
+        [Route("api/UsuarioMobils/{id}/Descripcion")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutDescripcionUsuario(int id, [FromBody] string descripcion)
+        {
+            if (string.IsNullOrEmpty(descripcion))
+            {
+                descripcion = ("");
+            }
+
+            try
+            {
+                var usuario = await db.UsuarioMobil.FindAsync(id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                usuario.Descripcion = descripcion;
+                await db.SaveChangesAsync();
+
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // DELETE: api/UsuarioMobils/5
