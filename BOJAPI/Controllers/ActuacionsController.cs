@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -45,9 +46,35 @@ namespace BOJAPI.Controllers
             return result;
         }
 
-        // PUT: api/Actuacions/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutActuacion(int id, Actuacion _actuacion)
+
+        // GET: api/Actuacions/5
+        [ResponseType(typeof(IEnumerable<Actuacion>))]
+        [HttpGet]
+        [Route("api/Actuacions/GetUpcomingNewActuacion/{creatorID}/{userID}")]
+        public async Task<IHttpActionResult> GetUpcomingNewActuacion(int creatorID, int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+            var actuacionesPendintesConf = await db.Actuacion
+                                            .Where(a => a.Creador_ID == creatorID && a.Finalizador_ID == userID && a.Estado < 3)
+                                            .ToListAsync();
+
+            if (actuacionesPendintesConf == null)
+            {
+                result = NotFound();
+            }
+            else
+            {
+
+                result = Ok(actuacionesPendintesConf);
+            }
+            return result;
+        }
+
+
+        [HttpPut]
+        [Route("api/Actuacions/CreateEvent/{event}")]
+        public async Task<IHttpActionResult> CreateActuacion(Actuacion _actuacion)
         {
             IHttpActionResult result;
             String missatge = "";
@@ -58,59 +85,11 @@ namespace BOJAPI.Controllers
             }
             else
             {
-                if (id != _actuacion.ID)
-                {
-                    result = BadRequest();
-                }
-                else
-                {
-                    db.Entry(_actuacion).State = EntityState.Modified;
-                    result = StatusCode(HttpStatusCode.NoContent);
-                    try
-                    {
-                        await db.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!ActuacionExists(id))
-                        {
-                            result = NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    catch (DbUpdateException ex)
-                    {
-                        SqlException sqlException = (SqlException)ex.InnerException.InnerException;
-                        missatge = Clases.Utilities.MissatgeError(sqlException);
-                        result = BadRequest(missatge);
-                    }
-                }
-            }
-            return result;
-        }
-
-        // POST: api/Actuacions
-        [ResponseType(typeof(Actuacion))]
-        public async Task<IHttpActionResult> PostActuacion(Actuacion _actuacion)
-        {
-            IHttpActionResult result;
-
-            if (!ModelState.IsValid)
-            {
-                result = BadRequest(ModelState);
-            }
-            else
-            {
-
-                db.Actuacion.Add(_actuacion);
-                String missatge = "";
+                db.Entry(_actuacion).State = EntityState.Modified;
+                result = StatusCode(HttpStatusCode.NoContent);
                 try
                 {
                     await db.SaveChangesAsync();
-                    result = CreatedAtRoute("DefaultApi", new { id = _actuacion.ID }, _actuacion);
                 }
                 catch (DbUpdateException ex)
                 {
@@ -118,16 +97,80 @@ namespace BOJAPI.Controllers
                     missatge = Clases.Utilities.MissatgeError(sqlException);
                     result = BadRequest(missatge);
                 }
+                
             }
             return result;
         }
 
-        // DELETE: api/Actuacions/5
-        [ResponseType(typeof(Actuacion))]
-        public async Task<IHttpActionResult> DeleteActuacion(int id)
+        // POST: api/Actuacions/5
+        [HttpPost]
+        [Route("api/Actuacions/CreateNewEvent/{creatorID}/{userID}/{dateEvent}")]
+        public async Task<IHttpActionResult> CreateNewActuacion(int creatorID, int userID, string dateEvent)
         {
             IHttpActionResult result;
-            Actuacion _actuacion = await db.Actuacion.FindAsync(id);
+            string missatge = "";
+            DateTime fechaEvento;
+
+            if (!ModelState.IsValid)
+            {
+                result = BadRequest(ModelState);
+            }
+
+            // Validar fecha
+            if (DateTime.TryParseExact(dateEvent, "yyyy-MM-dd HH:mm:ss.fff",
+                              CultureInfo.InvariantCulture,
+                              DateTimeStyles.None, out fechaEvento))
+            {
+                return BadRequest("Formato de fecha incorrecto.");
+            }
+            else
+            {
+                try
+                {
+                    // Crear nueva actuación
+                    Actuacion _actuacion = new Actuacion
+                    {
+                        Estado = 2,
+                        Creador_ID = creatorID,
+                        Finalizador_ID = userID,
+                        Fecha = fechaEvento
+                    };
+
+                    db.Actuacion.Add(_actuacion);
+                    await db.SaveChangesAsync();
+
+                    // Devolver la nueva actuación creada
+                    result = Ok(_actuacion);
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException?.InnerException is SqlException sqlException)
+                    {
+                        missatge = Clases.Utilities.MissatgeError(sqlException);
+                    }
+                    else
+                    {
+                        missatge = "Error desconocido al guardar en la base de datos.";
+                    }
+
+                    result = BadRequest(missatge);
+                }
+                catch (Exception ex)
+                {
+                    result = InternalServerError(ex);
+                }
+    
+            }
+            return result;
+        }
+
+
+        // DELETE: api/Actuacions/5
+        [HttpDelete]
+        [ResponseType(typeof(Actuacion))]
+        public async Task<IHttpActionResult> DeleteActuacion(Actuacion _actuacion)
+        {
+            IHttpActionResult result;
             if (_actuacion == null)
             {
                 result = NotFound();
