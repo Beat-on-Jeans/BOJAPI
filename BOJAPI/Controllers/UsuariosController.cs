@@ -215,7 +215,7 @@ namespace BOJAPI.Controllers
                                        join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
                                        join m in db.Matches on um.ID equals m.Finalizador_ID into matchesGroup
                                        from m in matchesGroup.DefaultIfEmpty() // LEFT JOIN
-                                       where (m.Creador_ID == null || (m.Creador_ID != 1 && m.Estado < 3))
+                                       where (m.Creador_ID == null || (m.Creador_ID != userID && m.Estado < 3))
                                              && um.ROL_ID != 1
                                         select new
                                        {
@@ -287,7 +287,7 @@ namespace BOJAPI.Controllers
                                        join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
                                        join m in db.Matches on um.ID equals m.Finalizador_ID into matchesGroup
                                        from m in matchesGroup.DefaultIfEmpty() // LEFT JOIN
-                                       where (m.Creador_ID == null || (m.Creador_ID != 1 && m.Estado < 3))
+                                       where (m.Creador_ID == null || (m.Creador_ID != userID && m.Estado < 3))
                                              && um.ROL_ID != 2
                                        select new
                                        {
