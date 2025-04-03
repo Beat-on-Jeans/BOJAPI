@@ -11,8 +11,9 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Fecha" Type="date" Nullable="false" />
-          <Property Name="UsuarioMobil_Local_ID" Type="int" Nullable="false" />
-          <Property Name="UsuarioMobil_Musico_ID" Type="int" Nullable="false" />
+          <Property Name="Creador_ID" Type="int" Nullable="false" />
+          <Property Name="Finalizador_ID" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="int" />
         </EntityType>
         <EntityType Name="Chats">
           <Key>
@@ -99,7 +100,7 @@
           <Property Name="Usuario_ID" Type="int" />
           <Property Name="ValoracionTotal" Type="float" />
           <Property Name="Ubicacion" Type="varchar" MaxLength="255" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="255" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Usuarios">
           <Key>
@@ -136,7 +137,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Actuacion">
-              <PropertyRef Name="UsuarioMobil_Local_ID" />
+              <PropertyRef Name="Creador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -148,7 +149,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Actuacion">
-              <PropertyRef Name="UsuarioMobil_Musico_ID" />
+              <PropertyRef Name="Finalizador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -610,8 +611,9 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="UsuarioMobil_Local_ID" Type="Int32" Nullable="false" />
-          <Property Name="UsuarioMobil_Musico_ID" Type="Int32" Nullable="false" />
+          <Property Name="Creador_ID" Type="Int32" Nullable="false" />
+          <Property Name="Finalizador_ID" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="Int32" />
           <NavigationProperty Name="UsuarioMobil" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Local" FromRole="Actuacion" ToRole="UsuarioMobil" />
           <NavigationProperty Name="UsuarioMobil1" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Musico" FromRole="Actuacion" ToRole="UsuarioMobil" />
         </EntityType>
@@ -719,7 +721,7 @@
           <Property Name="Usuario_ID" Type="Int32" />
           <Property Name="ValoracionTotal" Type="Double" />
           <Property Name="Ubicacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Actuacion" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Local" FromRole="UsuarioMobil" ToRole="Actuacion" />
           <NavigationProperty Name="Actuacion1" Relationship="dam05Model.FK_Actuacion_UsuarioMobil_Musico" FromRole="UsuarioMobil" ToRole="Actuacion" />
           <NavigationProperty Name="Chats" Relationship="dam05Model.FK_Chats_UsuarioMobil_Local" FromRole="UsuarioMobil" ToRole="Chats" />
@@ -779,7 +781,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Actuacion">
-              <PropertyRef Name="UsuarioMobil_Local_ID" />
+              <PropertyRef Name="Creador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -791,7 +793,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Actuacion">
-              <PropertyRef Name="UsuarioMobil_Musico_ID" />
+              <PropertyRef Name="Finalizador_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1044,8 +1046,9 @@
           <EntitySetMapping Name="Actuacion">
             <EntityTypeMapping TypeName="dam05Model.Actuacion">
               <MappingFragment StoreEntitySet="Actuacion">
-                <ScalarProperty Name="UsuarioMobil_Musico_ID" ColumnName="UsuarioMobil_Musico_ID" />
-                <ScalarProperty Name="UsuarioMobil_Local_ID" ColumnName="UsuarioMobil_Local_ID" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Finalizador_ID" ColumnName="Finalizador_ID" />
+                <ScalarProperty Name="Creador_ID" ColumnName="Creador_ID" />
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
