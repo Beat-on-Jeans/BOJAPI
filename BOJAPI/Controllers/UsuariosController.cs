@@ -201,150 +201,132 @@ namespace BOJAPI.Controllers
             return Ok(usuarioRecibidoCompleto);
         }
 
-
         [HttpGet]
         [Route("api/Usuarios/Matches_Locales/{Ubicacion}/{userID}")]
         public async Task<IHttpActionResult> GetLocalMatchesUser(String ubicacion, int userID)
         {
-            IHttpActionResult result;
-            db.Configuration.LazyLoadingEnabled = false;
             try
             {
-                // Obtener los usuarios que cumplen la condición
-                var userMatch = await (from u in db.Usuarios
-                                       join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
-                                       join m in db.Matches on um.ID equals m.Finalizador_ID into matchesGroup
-                                       from m in matchesGroup.DefaultIfEmpty() // LEFT JOIN
-                                       where (m.Creador_ID == null || (m.Creador_ID != userID && m.Estado < 3))
-                                             && um.ROL_ID != 1
-                                        select new
-                                       {
-                                           um.ID,
-                                           u.Nombre,
-                                           um.Descripcion,
-                                           um.Url_Imagen
-                                       }).Distinct().ToListAsync();
+                var ciudad = ubicacion.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                     .LastOrDefault()?
+                                     .Trim()
+                                     .ToLower();
 
-                // Extraer solo los IDs de los usuarios obtenidos
-                var userIds = userMatch.Select(u => u.ID).ToList();
-
-                // Obtener los géneros de los usuarios seleccionados
-                var userGenres = await (from um in db.UsuarioMobil
-                                        join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id
-                                        join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID
-                                        where userIds.Contains(um.ID) // Se usa la lista de IDs aquí
+                // 1. Obtener músicos disponibles con filtros mejorados
+                var musicosDisponibles = await (from um in db.UsuarioMobil
+                                                join u in db.Usuarios on um.Usuario_ID equals u.ID
+                                                where um.ROL_ID == 1
+                                                && um.Ubicacion.ToLower().Contains(ciudad)
+                                                && um.ID != userID
+                                                && !db.Matches.Any(m =>
+                                                    (m.Creador_ID == userID && m.Finalizador_ID == um.ID) || // Excluir matches creados por el usuario
+                                                    (m.Creador_ID == um.ID && m.Finalizador_ID == userID && m.Estado != 2)) // Solo permitir estado 2 como finalizador
                                         select new
                                         {
-                                            UsuarioID = um.ID,
-                                            Genero = gm.Nombre_Genero
+                                            um.ID,
+                                            u.Nombre,
+                                            um.Descripcion,
+                                            um.Url_Imagen,
+                                            um.Ubicacion
                                         }).ToListAsync();
 
-                // Agrupar géneros por usuario
-                var groupedUserGenres = userGenres
-                    .GroupBy(g => g.UsuarioID)
-                    .ToDictionary(g => g.Key, g => g.Select(x => x.Genero).Distinct().ToList());
+                if (!musicosDisponibles.Any())
+                    return NotFound();
 
-                // Combinar los usuarios con sus géneros
-                var finalResult = userMatch.Select(user => new
+                var musicosDisponiblesIDs = musicosDisponibles.Select(m => m.ID).ToList();
+
+                // 2. Optimización de consulta de géneros
+                var generosPorUsuario = await (from gu in db.Generos_Usuarios
+                                               join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID
+                                               where musicosDisponiblesIDs.Contains((int)gu.Usuario_Id) // Usamos los IDs previamente obtenidos
+                                               group gm.Nombre_Genero by gu.Usuario_Id into g
+                                               select new { UsuarioID = g.Key, Generos = g.ToList() })
+                              .ToDictionaryAsync(x => x.UsuarioID, x => x.Generos);
+
+                // 3. Proyección final optimizada
+                var resultadoFinal = musicosDisponibles.Select(m => new
                 {
-                    user.ID,
-                    user.Nombre,
-                    user.Descripcion,
-                    user.Url_Imagen,
-                    Generos = groupedUserGenres.ContainsKey(user.ID) ? groupedUserGenres[user.ID] : new List<string>()
-                }).ToList();
+                    m.ID,
+                    m.Nombre,
+                    m.Descripcion,
+                    m.Url_Imagen,
+                    m.Ubicacion,
+                    Generos = generosPorUsuario.ContainsKey(m.ID)
+              ? generosPorUsuario[m.ID]
+              : new List<string>()
+                });
 
-
-                if (finalResult == null)
-                {
-                    result = NotFound();
-                }
-
-                result = Ok(finalResult);
-
+                return Ok(resultadoFinal);
             }
             catch (Exception ex)
             {
-                result = InternalServerError(ex);
+                return InternalServerError(ex);
             }
-            return result;
         }
-
 
         [HttpGet]
         [Route("api/Usuarios/Matches_Music/{Ubicacion}/{userID}")]
         public async Task<IHttpActionResult> GetMusicMatchesUser(String ubicacion, int userID)
         {
-            var location = Regex.Split(ubicacion, @"\s*,\s*");
-            string ciudad = location[location.Length - 1].ToLower();
-            IHttpActionResult result;
-            db.Configuration.LazyLoadingEnabled = false;
-
             try
             {
-                // Obtener los usuarios que cumplen la condición
-                var userMatch = await (from u in db.Usuarios
-                                       join um in db.UsuarioMobil on u.ID equals um.Usuario_ID
-                                       join m in db.Matches on um.ID equals m.Finalizador_ID into matchesGroup
-                                       from m in matchesGroup.DefaultIfEmpty() // LEFT JOIN
-                                       where (m.Creador_ID == null || (m.Creador_ID != userID && m.Estado < 3))
-                                             && um.ROL_ID != 2
+                var ciudad = ubicacion.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                     .LastOrDefault()?
+                                     .Trim()
+                                     .ToLower();
+
+                // 1. Consulta optimizada para locales
+                var localesDisponibles = await (from um in db.UsuarioMobil
+                                                join u in db.Usuarios on um.Usuario_ID equals u.ID
+                                                where um.ROL_ID == 2
+                                                && um.Ubicacion.ToLower().Contains(ciudad)
+                                                && um.ID != userID
+                                                && !db.Matches.Any(m =>
+                                                    (m.Creador_ID == userID && m.Finalizador_ID == um.ID) ||
+                                                    (m.Creador_ID == um.ID && m.Finalizador_ID == userID && m.Estado != 2))
                                        select new
                                        {
                                            um.ID,
                                            u.Nombre,
                                            um.Descripcion,
-                                           um.Url_Imagen
-                                       }).Distinct().ToListAsync();
+                                           um.Url_Imagen,
+                                           um.Ubicacion
+                                       }).ToListAsync();
 
-                // Extraer solo los IDs de los usuarios obtenidos
-                var userIds = userMatch.Select(u => u.ID).ToList(); 
+                if (!localesDisponibles.Any())
+                    return NotFound();
 
-                // Obtener los géneros de los usuarios seleccionados
-                var userGenres = await (from um in db.UsuarioMobil
-                                        join gu in db.Generos_Usuarios on um.ID equals gu.Usuario_Id
-                                        join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID
-                                        where userIds.Contains(um.ID) // Se usa la lista de IDs aquí
-                                        select new
-                                        {
-                                            UsuarioID = um.ID,
-                                            Genero = gm.Nombre_Genero
-                                        }).ToListAsync();
+                // 2. Obtención de géneros mejorada
+                var musicosDisponiblesIDs = localesDisponibles.Select(m => m.ID).ToList();
 
-                // Agrupar géneros por usuario
-                var groupedUserGenres = userGenres
-                    .GroupBy(g => g.UsuarioID)
-                    .ToDictionary(g => g.Key, g => g.Select(x => x.Genero).Distinct().ToList());
+                // 2. Optimización de consulta de géneros
+                var generosPorUsuario = await (from gu in db.Generos_Usuarios
+                                               join gm in db.Generos_Musicales on gu.Genero_Id equals gm.ID
+                                               where musicosDisponiblesIDs.Contains((int)gu.Usuario_Id) // Usamos los IDs previamente obtenidos
+                                               group gm.Nombre_Genero by gu.Usuario_Id into g
+                                               select new { UsuarioID = g.Key, Generos = g.ToList() })
+                              .ToDictionaryAsync(x => x.UsuarioID, x => x.Generos);
 
-                // Combinar los usuarios con sus géneros
-                var finalResult = userMatch.Select(user => new
+                // 3. Proyección final optimizada
+                var resultadoFinal = localesDisponibles.Select(m => new
                 {
-                    user.ID,
-                    user.Nombre,
-                    user.Descripcion,
-                    user.Url_Imagen,
-                    Generos = groupedUserGenres.ContainsKey(user.ID) ? groupedUserGenres[user.ID] : new List<string>()
-                }).ToList();
+                    m.ID,
+                    m.Nombre,
+                    m.Descripcion,
+                    m.Url_Imagen,
+                    m.Ubicacion,
+                    Generos = generosPorUsuario.ContainsKey(m.ID)
+              ? generosPorUsuario[m.ID]
+              : new List<string>()
+                });
 
-                if (finalResult == null)
-                {
-                    result = BadRequest();
-                }
-                else
-                {
-                    result = Ok(finalResult);
-                }
-        
+                return Ok(resultadoFinal);
             }
             catch (Exception ex)
             {
-                result = InternalServerError(ex);
+                return InternalServerError(ex);
             }
-
-            return result;
         }
-
-
 
         // GET: api/Usuarios/Musicos
         [ResponseType(typeof(IEnumerable<UsuarioRecibido>))]
