@@ -90,6 +90,7 @@ namespace BOJAPI.Controllers
                 try
                 {
                     await db.SaveChangesAsync();
+                    result = Ok(_actuacion); 
                 }
                 catch (DbUpdateException ex)
                 {
@@ -102,68 +103,34 @@ namespace BOJAPI.Controllers
             return result;
         }
 
-        // POST: api/Actuacions/5
+        // POST: api/Actuacion
         [HttpPost]
-        [Route("api/Actuacions/CreateNewEvent/{creatorID}/{userID}/{dateEvent}")]
-        public async Task<IHttpActionResult> CreateNewActuacion(int creatorID, int userID, string dateEvent)
+        [ResponseType(typeof(Mensajes))]
+        public async Task<IHttpActionResult> PostMensajes(Actuacion _actuacion)
         {
             IHttpActionResult result;
-            string missatge = "";
-            DateTime fechaEvento;
-
             if (!ModelState.IsValid)
             {
                 result = BadRequest(ModelState);
             }
-
-            // Validar fecha
-            if (DateTime.TryParseExact(dateEvent, "yyyy-MM-dd HH:mm:ss.fff",
-                              CultureInfo.InvariantCulture,
-                              DateTimeStyles.None, out fechaEvento))
-            {
-                return BadRequest("Formato de fecha incorrecto.");
-            }
             else
             {
+                db.Actuacion.Add(_actuacion);
+                String missatge = "";
                 try
                 {
-                    // Crear nueva actuación
-                    Actuacion _actuacion = new Actuacion
-                    {
-                        Estado = 2,
-                        Creador_ID = creatorID,
-                        Finalizador_ID = userID,
-                        Fecha = fechaEvento
-                    };
-
-                    db.Actuacion.Add(_actuacion);
                     await db.SaveChangesAsync();
-
-                    // Devolver la nueva actuación creada
-                    result = Ok(_actuacion);
+                    result = CreatedAtRoute("DefaultApi", new { id = _actuacion.ID }, _actuacion);
                 }
                 catch (DbUpdateException ex)
                 {
-                    if (ex.InnerException?.InnerException is SqlException sqlException)
-                    {
-                        missatge = Clases.Utilities.MissatgeError(sqlException);
-                    }
-                    else
-                    {
-                        missatge = "Error desconocido al guardar en la base de datos.";
-                    }
-
+                    SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                    missatge = Clases.Utilities.MissatgeError(sqlException);
                     result = BadRequest(missatge);
                 }
-                catch (Exception ex)
-                {
-                    result = InternalServerError(ex);
-                }
-    
             }
             return result;
         }
-
 
         // DELETE: api/Actuacions/5
         [HttpDelete]
