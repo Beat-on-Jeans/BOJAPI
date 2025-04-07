@@ -45,6 +45,36 @@ namespace BOJAPI.Controllers
             return result;
         }
 
+        [ResponseType(typeof(List<Clases.Match>))] // Usa un DTO específico
+        [HttpGet]
+        [Route("api/Matches/GetUserMatches/{userId}")]
+        public async Task<IHttpActionResult> GetUserMatches(int userId)
+        {
+            try
+            {
+                db.Configuration.ProxyCreationEnabled = false; // Deshabilita proxies
+
+                var userMatches = await db.Matches
+                    .AsNoTracking()
+                    .Where(m => m.Creador_ID == userId || m.Finalizador_ID == userId)
+                    .Select(m => new Clases.Match // Proyecta a un DTO
+                    {
+                        ID = m.ID,
+                        CreadorId = m.Creador_ID,
+                        FinalizadorId = m.Finalizador_ID,
+                        Estado = (int)m.Estado
+                        // Mapea todas las propiedades necesarias
+                    })
+                    .ToListAsync();
+
+                return Ok(userMatches);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         // PUT: api/Matches/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutMatches(int id, Matches _matches)
@@ -246,23 +276,26 @@ namespace BOJAPI.Controllers
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones, devolviendo un error con detalles
-                return InternalServerError(new
+                return Content(HttpStatusCode.InternalServerError, new
                 {
-                    Message = "Hubo un error al intentar actualizar el estado del match.",
-                    ErrorDetails = ex.Message
+                    Message = "Hubo un error al procesar la solicitud.",
+                    ErrorDetails = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
 
 
-        private IHttpActionResult InternalServerError(object value)
+        private IHttpActionResult InternalServerError(Exception ex)
         {
-            throw new NotImplementedException();
+            // Aquí puedes registrar el error o hacer alguna otra acción si es necesario
+            return Content(HttpStatusCode.InternalServerError, new
+            {
+                Message = "Hubo un error al procesar la solicitud.",
+                ErrorDetails = ex.Message,
+                StackTrace = ex.StackTrace // Opcional, puedes quitarlo si no quieres mostrar detalles sensibles
+            });
         }
-
-
-
 
         // DELETE: api/Matches/5
         [ResponseType(typeof(Matches))]

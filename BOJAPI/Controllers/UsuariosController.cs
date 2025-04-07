@@ -344,8 +344,9 @@ namespace BOJAPI.Controllers
                                  where usuario.ROL_ID == 1 // Filtramos por rolId = 1 (músicos)
                                  select new UsuarioMobilAEnviar
                                  {
-                                     ID = usuario.ID,
+                                     ID = usuarioMobil.ID,
                                      Nombre = usuario.Nombre, // Nombre de Usuario (de la tabla Usuarios)
+                                     Contrasena = null,
                                      Descripcion = usuarioMobil.Descripcion, // Correo a null
                                      ValoracionTotal = (double)usuarioMobil.ValoracionTotal, // Contraseña a null
                                      ROL_ID = (int)usuario.ROL_ID,
@@ -380,8 +381,9 @@ namespace BOJAPI.Controllers
                                  where usuario.ROL_ID == 2 // Filtramos por rolId = 2 (locales)
                                  select new UsuarioMobilAEnviar
                                  {
-                                     ID = usuario.ID,
+                                     ID = usuarioMobil.ID,
                                      Nombre = usuario.Nombre, // Nombre de Usuario (de la tabla Usuarios)
+                                     Contrasena = null,
                                      Descripcion = usuarioMobil.Descripcion, // Correo a null
                                      ValoracionTotal = (double)usuarioMobil.ValoracionTotal, // Contraseña a null
                                      ROL_ID = (int)usuario.ROL_ID,
