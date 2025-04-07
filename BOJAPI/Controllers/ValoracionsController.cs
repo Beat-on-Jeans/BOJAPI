@@ -38,78 +38,118 @@ namespace BOJAPI.Controllers
             }
             else
             {
-
                 result = Ok(_valoracion);
             }
             return result;
         }
 
-        // PUT: api/Valoracions/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutValoracion(int id, Valoracion _valoracion)
+
+        [ResponseType(typeof(IEnumerable<Actuacion>))]
+        [HttpGet]
+        [Route("api/Valoraciones/isNewRatting/{userID}")]
+        public async Task<IHttpActionResult> GetUpcomingNewActuacion(int userID)
         {
             IHttpActionResult result;
-            String missatge = "";
+            db.Configuration.LazyLoadingEnabled = false;
 
-            if (!ModelState.IsValid)
+            var today = DateTime.UtcNow.Date;
+
+            var actuacionesAcabadas = await db.Actuacion
+                                            .Where(a => ((a.Creador_ID == userID || a.Finalizador_ID == userID) && a.Estado == 3) && a.Fecha < today)
+                                            .ToListAsync();
+
+            var otrosUsuarios = actuacionesAcabadas
+                                .SelectMany(a => new[] { a.Creador_ID, a.Finalizador_ID })
+                                .Where(id => id != userID)
+                                .Distinct()
+                                .ToList();
+
+            foreach (var actuaciones in actuacionesAcabadas)
             {
-                result = BadRequest(ModelState);
+                Valoracion valoracion_Creador = new Valoracion
+                {
+                    Valor = null,
+                    Valorador_ID = actuaciones.Creador_ID,
+                    Valorado_ID = actuaciones.Finalizador_ID,
+                };
+
+                Valoracion valoracion_Finalizador = new Valoracion
+                {
+                    Valor = null,
+                    Valorador_ID = actuaciones.Finalizador_ID,
+                    Valorado_ID = actuaciones.Creador_ID,
+                };
+
+                actuaciones.Estado = 4;
+
+                db.Entry(actuaciones).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.Valoracion.Add(valoracion_Creador);
+                db.SaveChanges();
+
+                db.Valoracion.Add(valoracion_Finalizador);
+                db.SaveChanges();
+            }
+
+            var valoracionesPendientes = await db.Valoracion
+                                           .Where(v => v.Valorador_ID == userID && v.Valor == null)
+                                           .ToListAsync();
+
+
+            if (valoracionesPendientes == null)
+            {
+                result = NotFound();
             }
             else
             {
-                if (id != _valoracion.ID)
-                {
-                    result = BadRequest();
-                }
-                else
-                {
-                    db.Entry(_valoracion).State = EntityState.Modified;
-                    result = StatusCode(HttpStatusCode.NoContent);
-                    try
-                    {
-                        await db.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!ValoracionExists(id))
-                        {
-                            result = NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    catch (DbUpdateException ex)
-                    {
-                        SqlException sqlException = (SqlException)ex.InnerException.InnerException;
-                        missatge = Clases.Utilities.MissatgeError(sqlException);
-                        result = BadRequest(missatge);
-
-                    }
-                }
+                result = Ok(valoracionesPendientes);
             }
             return result;
         }
 
-        // POST: api/Valoracions
+        // PUT: api/Valoracions
         [ResponseType(typeof(Valoracion))]
-        public async Task<IHttpActionResult> PostValoracion(Valoracion _valoracion)
+        [HttpPut]
+        [Route("api/Valoracions/{rating}")]
+        public async Task<IHttpActionResult> PostValoracion(Valoracion valoracion)
         {
             IHttpActionResult result;
-
+            String missatge = "";
             if (!ModelState.IsValid)
             {
                 result = BadRequest(ModelState);
             }
             else
             {
-                db.Valoracion.Add(_valoracion);
-                String missatge = "";
+                db.Entry(valoracion).State = EntityState.Modified;
+                result = StatusCode(HttpStatusCode.NoContent);
                 try
                 {
                     await db.SaveChangesAsync();
-                    result = CreatedAtRoute("DefaultApi", new { id = _valoracion.ID }, _valoracion);
+                }
+                catch (DbUpdateException ex)
+                {
+                    SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                    missatge = Clases.Utilities.MissatgeError(sqlException);
+                    result = BadRequest(missatge);
+                }
+
+                var valoracionTotal = await db.Valoracion
+                                        .Where(v => v.Valorado_ID == valoracion.Valorado_ID && v.Valor != null)
+                                        .Select(v => v.Valor)
+                                        .ToListAsync();
+
+                var ratteduser = await db.UsuarioMobil.FindAsync(valoracion.Valorado_ID);
+
+                ratteduser.ValoracionTotal = valoracionTotal.Average();
+
+                db.Entry(ratteduser).State = EntityState.Modified;
+                result = StatusCode(HttpStatusCode.NoContent);
+                try
+                {
+                    await db.SaveChangesAsync();
+                    result = Ok(valoracion);
                 }
                 catch (DbUpdateException ex)
                 {
