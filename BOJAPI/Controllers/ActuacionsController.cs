@@ -72,6 +72,43 @@ namespace BOJAPI.Controllers
         }
 
 
+        // GET: api/Actuacions/5
+        [ResponseType(typeof(IEnumerable<Actuacion>))]
+        [HttpGet]
+        [Route("api/Actuacions/GetUserActuaciones/{userID}")]
+        public async Task<IHttpActionResult> GetActuacions(int userID)
+        {
+            IHttpActionResult result;
+            db.Configuration.LazyLoadingEnabled = false;
+
+
+            var resultados = (from a in db.Actuacion
+                                join umCreador in db.UsuarioMobil on a.Creador_ID equals umCreador.ID
+                                join uCreador in db.Usuarios on umCreador.Usuario_ID equals uCreador.ID
+                                join umFinalizador in db.UsuarioMobil on a.Finalizador_ID equals umFinalizador.ID
+                                join uFinalizador in db.Usuarios on umFinalizador.Usuario_ID equals uFinalizador.ID
+                                where a.Creador_ID == userID || a.Finalizador_ID == userID
+                                select new
+                                {
+                                    Fechas = a.Fecha,
+                                    NombreCreador = uCreador.Nombre,
+                                    Imagen = umCreador.Url_Imagen,
+                                    NombreFinalizador = uFinalizador.Nombre,
+                                }).ToList();
+
+            if (resultados == null)
+            {
+                result = NotFound();
+            }
+            else
+            {
+
+                result = Ok(resultados);
+            }
+            return result;
+        }
+
+
         [HttpPut]
         [Route("api/Actuacions/CreateEvent/{event}")]
         public async Task<IHttpActionResult> CreateActuacion(Actuacion _actuacion)
