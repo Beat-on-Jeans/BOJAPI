@@ -73,6 +73,33 @@ namespace BOJAPI.Controllers
             }
         }
 
+        // GET: api/UsuarioMobils/5/Descripcion
+        [HttpGet]
+        [Route("api/UsuarioMobils/{UserID}/Valoraciones")]
+        [ResponseType(typeof(string))]
+        public async Task<IHttpActionResult> GetRattingUsuario(int UserID)
+        {
+            try
+            {
+                // Buscar el usuario por ID
+                var usuario = await db.UsuarioMobil
+                    .Where(u => u.ID == UserID)
+                    .Select(u => new { u.ValoracionTotal })
+                    .FirstOrDefaultAsync();
+
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(usuario.ValoracionTotal);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         // PUT: api/UsuarioMobils/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutUsuarioMobil(int id, UsuarioMobil _usuarioMobil)
