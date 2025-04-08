@@ -402,6 +402,84 @@ namespace BOJAPI.Controllers
             return result;
         }
 
+        // PUT: api/Usuarios/UpdateUser/{usuarioMobilId}
+        [HttpPut]
+        [Route("api/Usuarios/UpdateUser/{usuarioMobilId}")]
+        public async Task<IHttpActionResult> UpdateUser(int usuarioMobilId, UsuarioRecibido usuarioRecibido)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (usuarioMobilId != usuarioRecibido.ID)
+            {
+                return BadRequest("ID de UsuarioMobil no coincide");
+            }
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    var usuarioMobil = await db.UsuarioMobil.FindAsync(usuarioMobilId);
+                    if (usuarioMobil == null)
+                    {
+                        return BadRequest("UsuarioMobil no encontrado");
+                    }
+
+                    var usuario = await db.Usuarios.FindAsync(usuarioMobil.Usuario_ID);
+                    if (usuario == null)
+                    {
+                        return BadRequest("Usuario asociado no encontrado");
+                    }
+
+                    usuario.Nombre = usuarioRecibido.Nombre ?? usuario.Nombre;
+                    usuario.Correo = usuarioRecibido.Correo ?? usuario.Correo;
+
+                    if (!string.IsNullOrEmpty(usuarioRecibido.Contrasena))
+                    {
+                        usuario.Contrasena = usuarioRecibido.Contrasena;
+                    }
+
+                    db.Entry(usuario).State = EntityState.Modified;
+
+                    usuarioMobil.Ubicacion = usuarioRecibido.Ubicacion ?? usuarioMobil.Ubicacion;
+
+                    db.Entry(usuarioMobil).State = EntityState.Modified;
+
+                    await db.SaveChangesAsync();
+                    transaction.Commit();
+
+                    return Ok("Usuario actualizado correctamente");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    transaction.Rollback();
+                    return BadRequest("Error de concurrencia al actualizar");
+                }
+                catch (DbUpdateException ex)
+                {
+                    transaction.Rollback();
+                    SqlException sqlException = (SqlException)ex.InnerException?.InnerException;
+                    var mensaje = sqlException != null ?
+                        Clases.Utilities.MissatgeError(sqlException) :
+                        "Error al actualizar en la base de datos";
+                    return BadRequest(mensaje);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return InternalServerError(ex);
+                }
+            }
+        }
+
+        private bool UsuarioMobilExists(int id)
+        {
+            return db.UsuarioMobil.Count(e => e.ID == id) > 0;
+        }
+
 
         // DELETE: api/Usuarios/5
         [ResponseType(typeof(Usuarios))]
