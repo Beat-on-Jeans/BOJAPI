@@ -100,6 +100,33 @@ namespace BOJAPI.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("api/UsuarioMobils/Notificaiones/{userID}")]
+        [ResponseType(typeof(Notificaciones))]
+        public async Task<IHttpActionResult> GetnotificationsUsuario(int UserID)
+        {
+            try
+            {
+                // Buscar el usuario por ID
+                var notificacion = await db.UsuarioMobil
+                    .Where(u => u.ID == UserID)
+                    .Select(u => new { u.Notificaciones })
+                    .FirstOrDefaultAsync();
+
+                if (notificacion == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(notificacion);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         // PUT: api/UsuarioMobils/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutUsuarioMobil(int id, UsuarioMobil _usuarioMobil)
