@@ -167,6 +167,7 @@ namespace BOJAPI.Controllers
                     db.Matches.Add(newMatch);
                     await db.SaveChangesAsync();
 
+                    await Clases.Utilities.SetNotifications(db, Finalizador_ID, 1);
                     return Ok(new
                     {
                         Message = "Match creado exitosamente",
@@ -191,6 +192,7 @@ namespace BOJAPI.Controllers
                         db.Chats.Add(newChat);
                         await db.SaveChangesAsync();
 
+                        await Clases.Utilities.SetNotifications(db, Finalizador_ID, 1);
                         return Ok(new
                         {
                             Message = "Match actualizado a estado 'Finalizado' y chat creado",
@@ -198,6 +200,7 @@ namespace BOJAPI.Controllers
                         });
                     }
 
+                    await Clases.Utilities.SetNotifications(db, Finalizador_ID, 1);
                     return Ok(new
                     {
                         Message = "El match ya existe y está finalizado",

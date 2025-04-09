@@ -66,6 +66,8 @@ namespace BOJAPI.Controllers
 
             foreach (var actuaciones in actuacionesAcabadas)
             {
+                await Clases.Utilities.SetNotifications(db,actuaciones.Creador_ID, 4);
+                await Clases.Utilities.SetNotifications(db,actuaciones.Finalizador_ID, 4);
                 Valoracion valoracion_Creador = new Valoracion
                 {
                     Valor = null,
@@ -90,6 +92,7 @@ namespace BOJAPI.Controllers
 
                 db.Valoracion.Add(valoracion_Finalizador);
                 db.SaveChanges();
+
             }
 
             var valoracionesPendientes = await db.Valoracion
@@ -150,6 +153,7 @@ namespace BOJAPI.Controllers
                 {
                     await db.SaveChangesAsync();
                     result = Ok(valoracion);
+                    await Clases.Utilities.SetNotifications(db, (int)valoracion.Valorado_ID, 3);
                 }
                 catch (DbUpdateException ex)
                 {

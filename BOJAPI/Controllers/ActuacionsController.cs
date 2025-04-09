@@ -40,7 +40,6 @@ namespace BOJAPI.Controllers
             }
             else
             {
-
                 result = Ok(_actuacion);
             }
             return result;
@@ -158,6 +157,7 @@ namespace BOJAPI.Controllers
                 {
                     await db.SaveChangesAsync();
                     result = CreatedAtRoute("DefaultApi", new { id = _actuacion.ID }, _actuacion);
+                    await Clases.Utilities.SetNotifications(db, _actuacion.Finalizador_ID, 5);
                 }
                 catch (DbUpdateException ex)
                 {
@@ -188,6 +188,7 @@ namespace BOJAPI.Controllers
 
                     await db.SaveChangesAsync();
                     result = Ok(_actuacion);
+                    
                 }
                 catch (DbUpdateException ex)
                 {

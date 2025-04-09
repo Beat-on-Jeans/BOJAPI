@@ -103,7 +103,7 @@ namespace BOJAPI.Controllers
 
         [HttpGet]
         [Route("api/UsuarioMobils/Notificaiones/{userID}")]
-        [ResponseType(typeof(Notificaciones))]
+        [ResponseType(typeof(int))]
         public async Task<IHttpActionResult> GetnotificationsUsuario(int UserID)
         {
             try
@@ -111,7 +111,7 @@ namespace BOJAPI.Controllers
                 // Buscar el usuario por ID
                 var notificacion = await db.UsuarioMobil
                     .Where(u => u.ID == UserID)
-                    .Select(u => new { u.Notificaciones })
+                    .Select(u => new { u.Notificacion_ID })
                     .FirstOrDefaultAsync();
 
                 if (notificacion == null)
@@ -173,6 +173,39 @@ namespace BOJAPI.Controllers
             }
             return result;
         }
+
+
+        [HttpPut]
+        [Route("api/UsuarioMobils/NotificaionesNULL/{userID}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutNotificaionesUsuario(int id, [FromBody] string descripcion)
+        {
+            if (string.IsNullOrEmpty(descripcion))
+            {
+                descripcion = ("");
+            }
+
+            try
+            {
+                var usuario = await db.UsuarioMobil.FindAsync(id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                usuario.Notificacion_ID = null;
+                await db.SaveChangesAsync();
+
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+
 
         // POST: api/UsuarioMobils
         [ResponseType(typeof(UsuarioMobil))]

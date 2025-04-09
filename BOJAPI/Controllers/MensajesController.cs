@@ -141,6 +141,17 @@ namespace BOJAPI.Controllers
                 {
                     await db.SaveChangesAsync();
                     result = CreatedAtRoute("DefaultApi", new { id = _mensajes.ID }, _mensajes);
+
+                    var usuario = await db.Chats.FindAsync(_mensajes.Chat_ID);
+                    if (_mensajes.Emisor_ID == usuario.UsuarioMobil_Local_ID)
+                    {
+                        await Clases.Utilities.SetNotifications(db,usuario.UsuarioMobil_Musico_ID, 1);
+                    }
+                    else
+                    {
+                        await Clases.Utilities.SetNotifications(db,usuario.UsuarioMobil_Local_ID, 1);
+                    }
+                    
                 }
                 catch (DbUpdateException ex)
                 {

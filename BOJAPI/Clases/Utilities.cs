@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
+using BOJAPI.Models;
 
 namespace BOJAPI.Clases
 {
@@ -47,6 +50,24 @@ namespace BOJAPI.Clases
 
             }
             return missatge;
+        }
+
+        public static async Task SetNotifications(dam05Entities1 db, int finalizador_ID, int notification)
+        {
+            var userMobil = await db.UsuarioMobil.FirstOrDefaultAsync(um => um.ID == finalizador_ID);
+
+            if (notification == 1 && userMobil.Notificacion_ID != 1)
+            {
+                userMobil.Notificacion_ID = notification;
+                db.Entry(userMobil).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (notification != 1)
+            {
+                userMobil.Notificacion_ID = notification;
+                db.Entry(userMobil).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
         }
     }
 }
