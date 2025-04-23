@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using BOJAPI.Clases;
 using BOJAPI.Models;
 
 namespace BOJAPI.Controllers
@@ -151,6 +152,43 @@ namespace BOJAPI.Controllers
             return result;
         }
 
+        [HttpPut]
+        [Route("api/Soportes/{id}/Incidencia")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutDescripcionUsuario(int id, int incidencia_id)
+        {
+
+            try
+            {
+                var usuario = await db.UsuarioMobil.FindAsync(id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                // Crear nuevo soporte (incidencia)
+                var nuevoSoporte = new Soporte
+                {
+                    Usuario_ID = id,
+                    Tecnico_ID = 1,
+                    Tipo_Incidencia_ID = incidencia_id,
+                    Fecha_Creacion = DateTime.UtcNow,
+                    Fecha_Cierre = null,
+                };
+
+                db.Soporte.Add(nuevoSoporte);
+                await db.SaveChangesAsync();
+
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -164,5 +202,7 @@ namespace BOJAPI.Controllers
         {
             return db.Soporte.Count(e => e.ID == id) > 0;
         }
+
+       
     }
 }

@@ -167,6 +167,7 @@
     <Compile Include="Clases\GeneroDTO.cs" />
     <Compile Include="Clases\Generos_Musicales.cs" />
     <Compile Include="Clases\GeneroUsuario.cs" />
+    <Compile Include="Clases\Incidencia.cs" />
     <Compile Include="Clases\Match.cs" />
     <Compile Include="Clases\Mensajes.cs" />
     <Compile Include="Clases\UsuarioMatches.cs" />
