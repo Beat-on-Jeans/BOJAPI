@@ -106,25 +106,32 @@ namespace BOJAPI.Controllers
         [ResponseType(typeof(int))]
         public async Task<IHttpActionResult> GetnotificationsUsuario(int UserID)
         {
+            IHttpActionResult result;
             try
             {
                 // Buscar el usuario por ID
-                var notificacion = await db.UsuarioMobil
+                var user = await db.UsuarioMobil
                     .Where(u => u.ID == UserID)
-                    .Select(u => new { u.Notificacion_ID })
                     .FirstOrDefaultAsync();
 
-                if (notificacion == null)
+                if (user.Notificacion_ID == null)
                 {
-                    return NotFound();
+                    result = NotFound();
+                }
+                else
+                {
+                    result = Ok(user.Notificacion_ID);
+                    user.Notificacion_ID = null;
+                    db.Entry(user).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
                 }
 
-                return Ok(notificacion);
             }
             catch (Exception ex)
             {
-                return InternalServerError(ex);
+                result = InternalServerError(ex);
             }
+            return result;
         }
 
         // PUT: api/UsuarioMobils/5
